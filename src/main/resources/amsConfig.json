@@ -1,0 +1,9 @@
+{
+  "sap": {
+    "po": {
+      "baseUrl" : "http://10.6.4.64:50200/RESTAdapter",
+      "authToken": "QU1TUk5EOmFtc3Fhc0AyMDE5",
+      "itmService": "SI_OB_S_ItemMaster"
+    }
+  }
+}
