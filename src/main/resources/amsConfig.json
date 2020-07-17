@@ -1,9 +1,101 @@
 {
+  "agile": {
+    "url": "http://apps.iplm.com:7001/Agile",
+    "user": "admin",
+    "password": "tartan"
+  },
   "sap": {
     "po": {
-      "baseUrl" : "http://10.6.4.64:50200/RESTAdapter",
+      "baseUrl": "http://10.6.4.64:50200/RESTAdapter",
       "authToken": "QU1TUk5EOmFtc3Fhc0AyMDE5",
       "itmService": "SI_OB_S_ItemMaster"
     }
-  }
+  },
+  "validateAttachments": [
+    {
+      "step": "Artwork Upload",
+      "mfgLocations": [
+        "Dadra"
+      ],
+      "reqTypes": [
+        "Process File",
+        "Draft File"
+      ]
+    },
+    {
+      "step": "Process File Upload",
+      "mfgLocations": [
+        "Mohali"
+      ],
+      "reqTypes": [
+        "Draft File"
+      ]
+    }
+  ],
+  "propagateAttrs": [
+    {
+      "aw": "Page Three.Type of Release",
+      "aas": "Additional Information.Type of Release"
+    },
+    {
+      "aw": "Artwork Specifications.Product Name/Brand Name",
+      "aas": "Additional Information.Product Name/Brand Name"
+    },
+    {
+      "aw": "Artwork Specifications.Generic Name",
+      "aas": "Additional Information.Generic Name"
+    },
+    {
+      "aw": "Artwork Specifications.Reason for Initiation",
+      "aas": "Additional Information.Reason for Initiation"
+    },
+    {
+      "aw": "Artwork Specifications.Market",
+      "aas": "Additional Information.Market"
+    },
+    {
+      "aw": "Artwork Specifications.Manufacturing Location",
+      "aas": "Additional Information.Manufacturing Location"
+    },
+    {
+      "aw": "Artwork Specifications.Type of Grid",
+      "aas": "Additional Information.Type of Grid"
+    },
+    {
+      "aw": "Artwork Specifications.Strength",
+      "aas": "Additional Information.Strength"
+    },
+    {
+      "aw": "Artwork Specifications.Dosage Form",
+      "aas": "Additional Information.Dosage Form"
+    },
+    {
+      "aw": "Artwork Specifications.Formulation Type",
+      "aas": "Additional Information.Formulation Type"
+    },
+    {
+      "aw": "Artwork Specifications.Pack Size",
+      "aas": "Additional Information.Pack Size"
+    },
+    {
+      "aw": "Artwork Specifications.Pack Type",
+      "aas": "Additional Information.Pack Type"
+    },
+    {
+      "aw": "Artwork Specifications.Component",
+      "aas": "Additional Information.Component"
+    },
+    {
+      "aw": "Artwork Specifications.Registration no",
+      "aas": "Additional Information.Registration Number"
+    },
+    {
+      "aw": "Artwork Specifications.Implementation Schedule",
+      "aas": "Additional Information.Implementation Schedule"
+    },
+    {
+      "aw": "Artwork Specifications.Implementation Remarks",
+      "aas": "Additional Information.Implementation Remarks"
+    }
+  ]
 }
