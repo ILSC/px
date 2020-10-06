@@ -1,26 +1,31 @@
 import com.agile.api.APIException
-import com.agile.api.ExceptionConstants
-import com.agile.api.IAgileSession
+import com.agile.api.ChangeConstants
+import com.agile.api.ICell
 import com.agile.api.IChange
-import com.agile.api.IDataObject
 import com.agile.api.IItem
-import insight.common.logging.JLogger
+import insight.agile.AgileHelper
+import insight.agile.AgileServerInfo
 
-import java.util.logging.Logger
+import static com.agile.api.ExceptionConstants.APDM_MISSINGFIELDS_WARNING
+import static com.agile.api.ExceptionConstants.API_SEE_ROOT_CAUSE
 
-import static com.agile.api.AgileSessionFactory.*
-import static com.agile.api.ExceptionConstants.*
+def info = new AgileServerInfo(URL: 'http://apps.ilsc.com:7001/Agile', username: 'admin', password: 'tartan')
 
-System.setProperty('insight.application.config', '/Users/nsb/Projects/Sun/ams/px/src/main/resources')
-System.setProperty('logger', '/Users/nsb/Projects/Sun/ams/px/logs')
+def helper = new AgileHelper(serverInfo: info)
 
-String url = 'http://apps.ilsc.com:7001/Agile', user = 'admin', password = 'tartan'
+IChange pr = helper.session.getObject(IChange.OBJECT_TYPE, 'AAS00012')
 
-IAgileSession session = getInstance(url).createSession([(USERNAME): user, (PASSWORD): password])
+def errors = []
+pr.audit(false).values().flatten().each { APIException e ->
+    if (e.errorCode == APDM_MISSINGFIELDS_WARNING) {
+        if (!e.message.contains('You have insufficient privileges to resolve this audit issue.'))
+            errors << e.message
+    } else if (e.errorCode == API_SEE_ROOT_CAUSE) {
+        if (e.rootCause)
+            errors << e.rootCause.message
+    } else {
+        errors << e.message
+    }
+}
 
-IItem item = session.getObject(IItem.OBJECT_TYPE, 'AW00001')
-
-def vals = item.getCell(1566).value.selections
-println vals
-
-session.close()
+println errors

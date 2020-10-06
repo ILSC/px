@@ -1,35 +1,40 @@
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
-import com.agile.api.*
-import com.agile.px.IEventDirtyRowUpdate
+import com.agile.api.ExceptionConstants
+import com.agile.api.IAgileList
+import com.agile.api.IChange
+import com.agile.api.IItem
 import com.agile.px.IObjectEventInfo
-import com.agile.px.IUpdateTableEventInfo
-import com.agile.px.IWFChangeStatusEventInfo
+import groovy.xml.MarkupBuilder
 import insight.common.logging.JLogger
 
+import javax.mail.*
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeBodyPart
+import javax.mail.internet.MimeMessage
+import javax.mail.internet.MimeMultipart
 import java.util.logging.Level
 import java.util.logging.Logger
 
-import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
 import static com.agile.api.ChangeConstants.CLASS_CHANGE_ORDERS_CLASS
-import static com.agile.api.ItemConstants.*
-import static insight.sun.ams.AMSConfiguration.readKey
-import static insight.sun.ams.AMSConfiguration.loadCfg
+import static com.agile.api.ItemConstants.ATT_TITLE_BLOCK_LATEST_RELEASE_DATE
+import static com.agile.api.ItemConstants.TABLE_PENDINGCHANGES
 
 void invokeScript(IBaseScriptObj obj) {
+    Logger logger = JLogger.getLogger('insight.sun.ams.InitiateProofReview')
     try {
-        Logger logger = JLogger.getLogger('insight.sun.ams.InitiateProofReview')
 
         IObjectEventInfo eventInfo = obj.PXEventInfo
         IItem aw = eventInfo.dataObject
+        ExceptionConstants
         if (aw.getValue(ATT_TITLE_BLOCK_LATEST_RELEASE_DATE) == null)
             throw new Exception('Artwork should have been released before it can be sent to Printing Vendors')
-        if(aw.getTable(TABLE_PENDINGCHANGES).referentIterator.find{
-            IChange c-> c.agileClass.isSubclassOf(obj.agileSDKSession.adminInstance.getAgileClass(CLASS_CHANGE_ORDERS_CLASS))
+        if (aw.getTable(TABLE_PENDINGCHANGES).referentIterator.find {
+            IChange c -> c.agileClass.isSubclassOf(obj.agileSDKSession.adminInstance.getAgileClass(CLASS_CHANGE_ORDERS_CLASS))
         })
             throw new Exception('Artwork is currently under revision.')
         IAgileList ml = aw.getCell(1566).value
         ml.selection.each {
-           // it.
+            // it.
         }
 
     } catch (Exception ex) {
@@ -39,6 +44,4 @@ void invokeScript(IBaseScriptObj obj) {
     }
 }
 
-IItem getAW(IChange aas) {
-    aas.getTable(TABLE_AFFECTEDITEMS).referentIterator.find { true }
-}
+

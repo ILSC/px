@@ -42,6 +42,8 @@ void invokeScript(IBaseScriptObj obj) {
                 if (!desc) {
                     desc = [getValues(item).findAll { it }.join(', '), itmCode?.toString()].findAll { it }.join(' - ')
                 }
+                if(itmCode)
+                    desc = itmCode + '-' + desc
                 afItmRow.setValue(ATT_AFFECTED_ITEMS_ITEM_DESCRIPTION, desc)
             }
         } else {
@@ -54,6 +56,8 @@ void invokeScript(IBaseScriptObj obj) {
             if (!desc) {
                 desc = [getValues(item).findAll { it }.join(', '), itmCode?.toString()].findAll { it }.join(' - ')
             }
+            if(itmCode)
+                desc = itmCode + '-' + desc
             item.setValue(ATT_TITLE_BLOCK_DESCRIPTION, desc)
         }
         obj.logMonitor('Description Updated')

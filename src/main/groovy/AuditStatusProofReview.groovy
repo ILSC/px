@@ -9,7 +9,6 @@ import java.util.logging.Logger
 import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
 import static com.agile.api.CommonConstants.ATT_ATTACHMENTS_ATTACHMENT_TYPE
 import static com.agile.api.DataTypeConstants.*
-import static com.agile.api.ExceptionConstants.APDM_NOTALLAPPROVERSRESPOND_WARNING
 import static com.agile.api.ExceptionConstants.APDM_MISSINGFIELDS_WARNING
 import static com.agile.api.ExceptionConstants.API_SEE_ROOT_CAUSE
 import static insight.sun.ams.AMSConfiguration.loadCfg
@@ -29,12 +28,12 @@ void invokeScript(IBaseScriptObj obj) {
         aas.audit(false).values().flatten().each { APIException e ->
             if (e.errorCode == APDM_MISSINGFIELDS_WARNING) {
                 if (!e.message.contains('You have insufficient privileges to resolve this audit issue.'))
-                    errors << e.errorCode + ':' + e.message
+                    errors << e.message
             } else if (e.errorCode == API_SEE_ROOT_CAUSE) {
                 if (e.rootCause)
-                    errors << e.errorCode + ':' + e.rootCause.message
-            } else if (e.errorCode != APDM_NOTALLAPPROVERSRESPOND_WARNING){
-                errors << e.errorCode + ':' + e.message
+                    errors << e.rootCause.message
+            } else {
+                errors << e.message
             }
         }
 
@@ -56,9 +55,6 @@ void invokeScript(IBaseScriptObj obj) {
         }
 
         awList.each { aw ->
-            logger.info("Validating attributes on $aw.name and $aas.name")
-            validateAttrs(aw, aas, logger)
-
             logger.info("Validating attachments on $aw.name")
             validateAttachments(aas, aw, logger)
         }
@@ -69,36 +65,16 @@ void invokeScript(IBaseScriptObj obj) {
     }
 }
 
-boolean validateAttrs(IItem aw, IChange aas, Logger logger) {
-    readKey('propagateAttrs')?.each { atr ->
-        if (getVal(aw, atr.aw) != getVal(aas, atr.aas)) {
-            logger.info("Value for attribute $atr.aw not matching")
-            def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Value for attribute $atr.aw on artwork is not matching with AAS")
-            logger.log(Level.SEVERE, ex.message, ex)
-            throw ex
-        }
-    }
-    return true
-}
-
 void validateAttachments(IChange aas, IItem aw, Logger logger) {
-    def mfgLoc = getVal(aas, "Page Three.Manufacturing Location").find { true }.toString()
-    logger.info("Looking up rule for status $aas.status.name and manufacturing location $mfgLoc")
-    def rule = readKey('validateAttachments')?.find { it.step == aas.status.name && mfgLoc in it.mfgLocations }
-    if (rule) {
-        def types = aw.attachments.collect { IRow r ->
-            logger.info("reading type from attachment row")
-            getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString()
-        }
-        logger.info("Found files of type $types attached to $aw.name, $aw.revision")
-        rule.reqTypes.each { type ->
-            logger.info("Checking for file type $type on $aw.name, $aw.revision")
-            if (!(type in types)) {
-                throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Attachment of type $type was not found on artwork $aw.name.")
-            }
-        }
-    } else {
-        logger.info("No rule defined for status $aas.status.name and manufacturing location $mfgLoc")
+    def type = 'Proof'
+    def types = aw.attachments.collect { IRow r ->
+        logger.info("reading type from attachment row")
+        getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString()
+    }
+    logger.info("Found files of type $types attached to $aw.name, $aw.revision")
+
+    if (!(type in types)) {
+        throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Attachment of type $type was not found on artwork $aw.name.")
     }
 }
 
