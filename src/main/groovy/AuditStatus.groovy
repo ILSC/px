@@ -23,47 +23,51 @@ void invokeScript(IBaseScriptObj obj) {
         IChange aas = eventInfo.dataObject
         logger.info("Performing Audit on AAS $aas.name")
 
-        def errors = []
-        aas.audit(false).values().flatten().each { APIException e ->
-            if (e.errorCode == APDM_MISSINGFIELDS_WARNING) {
-                if (!e.message.contains('You have insufficient privileges to resolve this audit issue.'))
-                    errors << e.errorCode + ':' + e.message
-            } else if (e.errorCode == API_SEE_ROOT_CAUSE) {
-                if (e.rootCause)
-                    errors << e.errorCode + ':' + e.rootCause.message
-            } else if (e.errorCode != APDM_NOTALLAPPROVERSRESPOND_WARNING) {
-                errors << e.errorCode + ':' + e.message
-            }
-        }
-
-        if (errors) {
-            logger.info("Found ${errors.size()} issues in $aas.name")
-            logger.info(errors.join(''))
-            def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Please perform audit Status to get details of the issues preventing status change. ${errors.join()}")
-            logger.log(Level.SEVERE, ex.message, ex)
-            throw ex
-        }
-
-        logger.info("Getting attached artwork from $aas.name")
-        def awList = getArtWorks(aas)
-
-        if (!awList?.size()) {
-            def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Couldn't find any atrwork attached to the AAS.")
-            logger.log(Level.SEVERE, ex.message, ex)
-            throw ex
-        }
-
-        awList.each { aw ->
-            logger.info("Validating attributes on $aw.name and $aas.name")
-            validateAttrs(aw, aas, logger)
-
-            logger.info("Validating attachments on $aw.name")
-            validateAttachments(aas, aw, logger)
-        }
+        auditAAS(aas, logger)
     } catch (Exception ex) {
         obj.logFatal([ex.message, ex.cause?.message].join(' '))
         logger.log(Level.SEVERE, 'Failed to perform audit', ex)
         throw (ex)
+    }
+}
+
+void auditAAS(IChange aas, Logger logger) {
+    def errors = []
+    aas.audit(false).values().flatten().each { APIException e ->
+        if (e.errorCode == APDM_MISSINGFIELDS_WARNING) {
+            if (!e.message.contains('You have insufficient privileges to resolve this audit issue.'))
+                errors << e.errorCode + ':' + e.message
+        } else if (e.errorCode == API_SEE_ROOT_CAUSE) {
+            if (e.rootCause)
+                errors << e.errorCode + ':' + e.rootCause.message
+        } else if (e.errorCode != APDM_NOTALLAPPROVERSRESPOND_WARNING) {
+            errors << e.errorCode + ':' + e.message
+        }
+    }
+
+    if (errors) {
+        logger.info("Found ${errors.size()} issues in $aas.name")
+        logger.info(errors.join(''))
+        def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Please perform audit Status to get details of the issues preventing status change. ${errors.join()}")
+        logger.log(Level.SEVERE, ex.message, ex)
+        throw ex
+    }
+
+    logger.info("Getting attached artwork from $aas.name")
+    def awList = getArtWorks(aas)
+
+    if (!awList?.size()) {
+        def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Couldn't find any atrwork attached to the AAS.")
+        logger.log(Level.SEVERE, ex.message, ex)
+        throw ex
+    }
+
+    awList.each { aw ->
+        logger.info("Validating attributes on $aw.name and $aas.name")
+        validateAttrs(aw, aas, logger)
+
+        logger.info("Validating attachments on $aw.name")
+        validateAttachments(aas, aw, logger)
     }
 }
 
@@ -81,9 +85,9 @@ boolean validateAttrs(IItem aw, IChange aas, Logger logger) {
 
 void validateAttachments(IChange aas, IItem aw, Logger logger) {
     def workflow = aas.workflow.name
-    def status = aas.workflow.name
-    def chgCat = getVal(aas, "Cover page.Change Category")
-    List mfgLoc = getVal(aas, "Page Three.Manufacturing Location") ?: []
+    def status = aas.status.name
+    def chgCat = getVal(aas, "Cover Page.Change Category")
+    List mfgLoc = getVal(aas, "Page Three.*Manufacturing Location") ?: []
     def grid = getVal(aas, "Page Three.Type of Grid")
     def release = getVal(aas, "Page Three.*Type of Release")
     def markets = getVal(aas, "Page Three.*Market")
@@ -98,7 +102,8 @@ void validateAttachments(IChange aas, IItem aw, Logger logger) {
                 rule.mfg.intersect(mfgLoc) &&
                 rule.typeOfGrid == grid &&
                 rule.typeOfRelease == release &&
-                rule.market in markets
+                ((rule.market.in && rule.market.in.intersect(markets)) ||
+                        (rule.market.notIn && !rule.market.notIn.intersect(markets)))
     }
 
     if (rules) {
@@ -151,7 +156,7 @@ def getVal(IAgileObject obj, def atrId) {
             return cell.value.toString()
         case TYPE_MULTILIST:
             IAgileList mList = cell.value
-            return mList.toString().split(';')
+            return mList.toString().split(';').toList()
         default:
             return cell.value
     }

@@ -22,7 +22,10 @@
     ],
     "templatePath": "D:\\Insight\\ams\\px\\src\\main\\resources\\template.xml",
     "stagingDir": "D:\\Insight\\ams\\staging",
-    "emails": ["navtej.bassi@insightplm.com", "raghunath.n@insightplm.com"],
+    "emails": [
+      "navtej.bassi@insightplm.com",
+      "raghunath.n@insightplm.com"
+    ],
     "mapping": {
       "foil": {
         "FGCODE": {
@@ -326,30 +329,69 @@
   ],
   "validateAttachments": [
     {
-      "step": "Artwork Upload",
-      "mfgLocations": [
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Request",
+      "chgCat": "Commercial",
+      "mfg": [
         "Dadra",
-        "Dewas",
-        "Goa",
         "Guwahati",
         "Halol I",
         "Halol II",
         "Jammu",
         "Karkhadi",
-        "Mohali",
-        "OHM Labs Inc - Livingston Avenue",
-        "OHM labs Inc - Terminal Road",
-        "Others",
-        "Paonta",
-        "RXIL",
         "Sikkim I",
         "Sikkim II",
         "Silvassa",
-        "Solrex",
-        "Terapia"
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
       ],
-      "reqTypes": [
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "US"
+        ]
+      },
+      "attOnAAS": [
+        "Text File",
+        "Approval Package"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "US"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
         "Draft File",
+        "Pack Profile",
         "Process File"
       ]
     }
