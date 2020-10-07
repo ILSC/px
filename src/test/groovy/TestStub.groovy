@@ -6,6 +6,6 @@ def info = new AgileServerInfo(URL: 'http://ncorp-amstest.ranbaxy.com:7001/Agile
 
 def helper = new AgileHelper(serverInfo: info)
 
-def aas = helper.session.getObject(IChange.OBJECT_TYPE, 'SUN-AAS-039389')
+def aas = helper.session.getObject(IChange.OBJECT_TYPE, 'SUN-AAS-039367')
 
 println new SendAWInfo().processAAS(aas)
