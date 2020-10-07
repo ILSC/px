@@ -1,4 +1,5 @@
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
+import com.agile.api.IChange
 import com.agile.api.IItem
 import com.agile.api.IRow
 import com.agile.px.IObjectEventInfo
@@ -17,18 +18,24 @@ void invokeScript(IBaseScriptObj obj) {
 
         IObjectEventInfo eventInfo = obj.PXEventInfo
         def aas = eventInfo.dataObject
-        aas.getTable(TABLE_AFFECTEDITEMS).referentIterator.each { IItem aw ->
-            aw.setRevision(aas)
-            def tblAttachments = aw.attachments
-            tblAttachments.findAll { IRow row ->
-                row.getValue(ATT_ATTACHMENTS_ATTACHMENT_TYPE) == 'Process File'
-            }.each { IRow row ->
-                tblAttachments.removeRow(row)
-            }
-        }
+        removeAttachments(aas)
     } catch (Exception ex) {
         obj.logFatal([ex.message, ex.cause?.message].join(' '))
         logger.log(Level.SEVERE, 'Failed to remove process files on Artworks attached to AAS', ex)
         throw (ex)
+    }
+}
+
+void removeAttachments(IChange aas){
+    aas.getTable(TABLE_AFFECTEDITEMS).referentIterator.each { IItem aw ->
+        aw.setRevision(aas)
+        def tblAttachments = aw.attachments
+        List<IRow> rows = tblAttachments.findAll { IRow row ->
+            row.getValue(ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString() == 'Process File'
+        }
+
+        rows.each { IRow row ->
+            tblAttachments.removeRow(row)
+        }
     }
 }

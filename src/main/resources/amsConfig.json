@@ -1,9 +1,4 @@
 {
-  "agile": {
-    "url": "http://apps.iplm.com:7001/Agile",
-    "user": "admin",
-    "password": "tartan"
-  },
   "sap": {
     "po": {
       "baseUrl": "http://10.6.4.64:50200/RESTAdapter",
@@ -11,91 +6,104 @@
       "itmService": "SI_OB_S_ItemMaster"
     }
   },
+  "sendAWInfo": {
+    "templatePath": "D:\\Insight\\ams\\px\\src\\main\\resources\\template.xml",
+    "stagingDir": "D:\\Insight\\ams\\staging"
+  },
+  "propagateAttrs": [
+    {
+      "aw": "Page Three.*Type of Release",
+      "aas": "Page Three.*Type of Release"
+    },
+    {
+      "aw": "Page Three.*Product Name/Brand Name",
+      "aas": "Page Three.*Product Name/Brand Name"
+    },
+    {
+      "aw": "Page Three.*Generic Name",
+      "aas": "Page Three.*Generic Name"
+    },
+    {
+      "aw": "Page Three.*Market",
+      "aas": "Page Three.*Market"
+    },
+    {
+      "aw": "Page Three.*Manufacturing Location",
+      "aas": "Page Three.*Manufacturing Location"
+    },
+    {
+      "aw": "Page Three.Type of Grid",
+      "aas": "Page Three.Type of Grid"
+    },
+    {
+      "aw": "Page Three.*Strength",
+      "aas": "Page Three.*Strength"
+    },
+    {
+      "aw": "Page Three.*Dosage Form",
+      "aas": "Page Three.*Dosage Form"
+    },
+    {
+      "aw": "Page Three.*Pack Size",
+      "aas": "Page Three.*Pack Size"
+    },
+    {
+      "aw": "Page Three.*Pack Type",
+      "aas": "Page Three.*Pack Type"
+    },
+    {
+      "aw": "Page Three.*Implementation Schedule",
+      "aas": "Page Three.*Implementation Schedule"
+    },
+    {
+      "aw": "Page Three.*Product Line/Product Code",
+      "aas": "Page Three.*Product Line/Product Code"
+    },
+    {
+      "aw": "Page Three.Shelf Life",
+      "aas": "Page Three.Approved Shelf Life in Months"
+    },
+    {
+      "aw": "Page Three.*Implementation Remarks",
+      "aas": "Page Three.*Implementation Remarks"
+    },
+    {
+      "aw": "Page Three.FG Code",
+      "aas": "Page Three.FG Code"
+    },
+    {
+      "aw": "Page Three.OS/LLocation",
+      "aas": "Page Three.OS/LL Location"
+    }
+  ],
   "validateAttachments": [
     {
       "step": "Artwork Upload",
       "mfgLocations": [
-        "Dadra"
+        "Dadra",
+        "Dewas",
+        "Goa",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Mohali",
+        "OHM Labs Inc - Livingston Avenue",
+        "OHM labs Inc - Terminal Road",
+        "Others",
+        "Paonta",
+        "RXIL",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Solrex",
+        "Terapia"
       ],
       "reqTypes": [
-        "Process File",
-        "Draft File"
+        "Draft File",
+        "Process File"
       ]
-    },
-    {
-      "step": "Process File Upload",
-      "mfgLocations": [
-        "Mohali"
-      ],
-      "reqTypes": [
-        "Draft File"
-      ]
-    }
-  ],
-  "propagateAttrs": [
-    {
-      "aw": "Page Three.Type of Release",
-      "aas": "Additional Information.Type of Release"
-    },
-    {
-      "aw": "Artwork Specifications.Product Name/Brand Name",
-      "aas": "Additional Information.Product Name/Brand Name"
-    },
-    {
-      "aw": "Artwork Specifications.Generic Name",
-      "aas": "Additional Information.Generic Name"
-    },
-    {
-      "aw": "Artwork Specifications.Reason for Initiation",
-      "aas": "Additional Information.Reason for Initiation"
-    },
-    {
-      "aw": "Artwork Specifications.Market",
-      "aas": "Additional Information.Market"
-    },
-    {
-      "aw": "Artwork Specifications.Manufacturing Location",
-      "aas": "Additional Information.Manufacturing Location"
-    },
-    {
-      "aw": "Artwork Specifications.Type of Grid",
-      "aas": "Additional Information.Type of Grid"
-    },
-    {
-      "aw": "Artwork Specifications.Strength",
-      "aas": "Additional Information.Strength"
-    },
-    {
-      "aw": "Artwork Specifications.Dosage Form",
-      "aas": "Additional Information.Dosage Form"
-    },
-    {
-      "aw": "Artwork Specifications.Formulation Type",
-      "aas": "Additional Information.Formulation Type"
-    },
-    {
-      "aw": "Artwork Specifications.Pack Size",
-      "aas": "Additional Information.Pack Size"
-    },
-    {
-      "aw": "Artwork Specifications.Pack Type",
-      "aas": "Additional Information.Pack Type"
-    },
-    {
-      "aw": "Artwork Specifications.Component",
-      "aas": "Additional Information.Component"
-    },
-    {
-      "aw": "Artwork Specifications.Registration no",
-      "aas": "Additional Information.Registration Number"
-    },
-    {
-      "aw": "Artwork Specifications.Implementation Schedule",
-      "aas": "Additional Information.Implementation Schedule"
-    },
-    {
-      "aw": "Artwork Specifications.Implementation Remarks",
-      "aas": "Additional Information.Implementation Remarks"
     }
   ]
 }

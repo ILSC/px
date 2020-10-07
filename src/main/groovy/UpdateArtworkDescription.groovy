@@ -1,5 +1,6 @@
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
 import com.agile.api.IChange
+import com.agile.api.IDataObject
 import com.agile.api.IItem
 import com.agile.api.IRow
 import com.agile.api.ITable
@@ -27,39 +28,8 @@ void invokeScript(IBaseScriptObj obj) {
         IObjectEventInfo eventInfo = obj.PXEventInfo
         def item = eventInfo.dataObject
 
-        def itemCode = ATT_PAGE_THREE_TEXT07
-
-        ITable pendingChg = item.getTable(TABLE_PENDINGCHANGES)
-        if (pendingChg.size()) {
-            pendingChg.referentIterator.each { IChange chg ->
-                IRow afItmRow = chg.getTable(TABLE_AFFECTEDITEMS).tableIterator
-                        .find { IRow r -> r.getValue(ATT_AFFECTED_ITEMS_ITEM_NUMBER) == item.name }
-                String itmCode = afItmRow.referent.getTable(TABLE_REDLINEPAGETHREE)[0].getCell(itemCode).value
-                def desc = null
-                if (itmCode) {
-                    desc = getDescriptionFromSAP(itmCode)
-                }
-                if (!desc) {
-                    desc = [getValues(item).findAll { it }.join(', '), itmCode?.toString()].findAll { it }.join(' - ')
-                }
-                if(itmCode)
-                    desc = itmCode + '-' + desc
-                afItmRow.setValue(ATT_AFFECTED_ITEMS_ITEM_DESCRIPTION, desc)
-            }
-        } else {
-            String itmCode = item.getValue(itemCode)
-
-            def desc = null
-            if (itmCode) {
-                desc = getDescriptionFromSAP(itmCode)
-            }
-            if (!desc) {
-                desc = [getValues(item).findAll { it }.join(', '), itmCode?.toString()].findAll { it }.join(' - ')
-            }
-            if(itmCode)
-                desc = itmCode + '-' + desc
-            item.setValue(ATT_TITLE_BLOCK_DESCRIPTION, desc)
-        }
+        String desc = getDescription(item)
+        item.setValue(ATT_TITLE_BLOCK_DESCRIPTION, desc)
         obj.logMonitor('Description Updated')
     } catch (Exception ex) {
         obj.logFatal([ex.message, ex.cause?.message].join(' '))
@@ -68,13 +38,49 @@ void invokeScript(IBaseScriptObj obj) {
     }
 }
 
-List getValues(IItem item) {
-    def productName = ATT_PAGE_THREE_LIST04, strength = ATT_PAGE_THREE_TEXT01, component = ATT_PAGE_THREE_LIST02,
-        markets = ATT_PAGE_THREE_MULTILIST02
+String getDescription(IDataObject item) {
+    def itemCode = ATT_PAGE_THREE_TEXT07
+    String desc = null
+    ITable pendingChg = item.getTable(TABLE_PENDINGCHANGES)
+    if (pendingChg.size()) {
+        pendingChg.referentIterator.each { IChange chg ->
+            IRow afItmRow = chg.getTable(TABLE_AFFECTEDITEMS).tableIterator
+                    .find { IRow r -> r.getValue(ATT_AFFECTED_ITEMS_ITEM_NUMBER) == item.name }
+            String itmCode = afItmRow.referent.getTable(TABLE_REDLINEPAGETHREE)[0].getCell(itemCode).value
 
+            if (itmCode) {
+                desc = getDescriptionFromSAP(itmCode)
+            }
+            if (!desc) {
+                desc = getValues(item).findAll { it }.join(', ')
+            }
+            if (itmCode)
+                desc = itmCode + ' - ' + desc
+        }
+    } else {
+        String itmCode = item.getValue(itemCode)
+
+        if (itmCode) {
+            desc = getDescriptionFromSAP(itmCode)
+        }
+        if (!desc) {
+            desc = getValues(item).findAll { it }.join(', ')
+        }
+        if (itmCode)
+            desc = itmCode + ' - ' + desc
+
+    }
+    desc
+}
+
+
+List getValues(IItem item) {
+    def productName = ATT_PAGE_THREE_LIST04, strength = ATT_PAGE_THREE_TEXT01, component = ATT_PAGE_TWO_LIST12,
+        markets = ATT_PAGE_THREE_MULTILIST02
     [item.getValue(productName)?.toString(), item.getValue(strength)?.toString(), item.getValue(component)?.toString(),
      item.getValue(markets)?.toString()?.toUpperCase()?.replaceAll(';', ' ')]
 }
+
 
 String getDescriptionFromSAP(String itemCode) {
     try {
@@ -92,7 +98,10 @@ String getDescriptionFromSAP(String itemCode) {
 
         if (post.responseCode == 200) {
             def out = new JsonSlurper().parse(post.inputStream)
-            out?.MT_ItemMaster?.Response?.description
+            if(out?.MT_ItemMaster)
+                out?.MT_ItemMaster.Response?.description
+            else
+                null
         } else {
             null
         }

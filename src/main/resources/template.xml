@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:x="urn:schemas-microsoft-com:office:excel"
+          xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:html="http://www.w3.org/TR/REC-html40">
+    <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+        <Author>Navtej Bassi</Author>
+        <LastAuthor>Navtej Bassi</LastAuthor>
+        <Created>2020-10-06T23:20:38Z</Created>
+        <LastSaved>2020-10-06T23:20:18Z</LastSaved>
+        <Version>16.00</Version>
+    </DocumentProperties>
+    <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+        <AllowPNG/>
+    </OfficeDocumentSettings>
+    <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+        <WindowHeight>12960</WindowHeight>
+        <WindowWidth>25240</WindowWidth>
+        <WindowTopX>3180</WindowTopX>
+        <WindowTopY>3960</WindowTopY>
+        <ProtectStructure>False</ProtectStructure>
+        <ProtectWindows>False</ProtectWindows>
+    </ExcelWorkbook>
+    <Styles>
+        <Style ss:ID="Default" ss:Name="Normal">
+            <Alignment ss:Vertical="Bottom"/>
+            <Borders/>
+            <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#000000"/>
+            <Interior/>
+            <NumberFormat/>
+            <Protection/>
+        </Style>
+    </Styles>
+    <Worksheet ss:Name="ERP_CODE_INTIMATION_Halol I_28_">
+        <Table ss:ExpandedColumnCount="39" ss:ExpandedRowCount="7" x:FullColumns="1"
+               x:FullRows="1" ss:DefaultColumnWidth="65" ss:DefaultRowHeight="16">
+            <Column ss:Width="36"/>
+            <Column ss:Width="118"/>
+            <Column ss:Width="81"/>
+            <Column ss:Width="397"/>
+            <Column ss:Width="67"/>
+            <Column ss:Width="188"/>
+            <Column ss:Width="72"/>
+            <Column ss:Width="78"/>
+            <Column ss:Width="122"/>
+            <Column ss:Width="66"/>
+            <Column ss:Width="71"/>
+            <Column ss:Width="39"/>
+            <Column ss:Width="38"/>
+            <Column ss:Width="118"/>
+            <Column ss:Width="33"/>
+            <Column ss:Width="52"/>
+            <Column ss:Width="41"/>
+            <Column ss:Width="50"/>
+            <Column ss:Width="53"/>
+            <Column ss:Width="71"/>
+            <Column ss:Width="126"/>
+            <Column ss:Width="134"/>
+            <Column ss:Width="75"/>
+            <Column ss:Width="49"/>
+            <Column ss:Width="74"/>
+            <Column ss:Width="82"/>
+            <Column ss:Width="68"/>
+            <Column ss:Width="94"/>
+            <Column ss:Width="56"/>
+            <Column ss:Width="78"/>
+            <Column ss:Width="54"/>
+            <Column ss:Width="67"/>
+            <Column ss:Width="77"/>
+            <Column ss:Width="54"/>
+            <Column ss:Width="155"/>
+            <Column ss:Width="96"/>
+            <Column ss:Width="111"/>
+            <Column ss:Width="1282"/>
+            <Column ss:Width="68"/>
+            <Row ss:AutoFitHeight="0">
+                <Cell><Data ss:Type="String">S. N0.</Data></Cell>
+                <Cell><Data ss:Type="String">FGCODE</Data></Cell>
+                <Cell><Data ss:Type="String">COMPONENT</Data></Cell>
+                <Cell><Data ss:Type="String">Description</Data></Cell>
+                <Cell><Data ss:Type="String">ERP Code</Data></Cell>
+                <Cell><Data ss:Type="String">Product Name</Data></Cell>
+                <Cell><Data ss:Type="String">Dosage Form</Data></Cell>
+                <Cell><Data ss:Type="String">Type</Data></Cell>
+                <Cell><Data ss:Type="String">Description Component</Data></Cell>
+                <Cell><Data ss:Type="String">Pack Details</Data></Cell>
+                <Cell><Data ss:Type="String">Dimension</Data></Cell>
+                <Cell><Data ss:Type="String">Guage</Data></Cell>
+                <Cell><Data ss:Type="String">Colour</Data></Cell>
+                <Cell><Data ss:Type="String">Rate Contract Number</Data></Cell>
+                <Cell><Data ss:Type="String">UOM</Data></Cell>
+                <Cell><Data ss:Type="String">Design</Data></Cell>
+                <Cell><Data ss:Type="String">Grp CD</Data></Cell>
+                <Cell><Data ss:Type="String">S Grp CD</Data></Cell>
+                <Cell><Data ss:Type="String">Actual on</Data></Cell>
+                <Cell><Data ss:Type="String">Issue Criteria</Data></Cell>
+                <Cell><Data ss:Type="String">Unit Rate Unit Purchase</Data></Cell>
+                <Cell><Data ss:Type="String">Qty and Rcp total percent</Data></Cell>
+                <Cell><Data ss:Type="String">Location Code</Data></Cell>
+                <Cell><Data ss:Type="String">Item Ser</Data></Cell>
+                <Cell><Data ss:Type="String">Location Type</Data></Cell>
+                <Cell><Data ss:Type="String">Track Shelf Life</Data></Cell>
+                <Cell><Data ss:Type="String">QC Required</Data></Cell>
+                <Cell><Data ss:Type="String">QC Required Type</Data></Cell>
+                <Cell><Data ss:Type="String">Pack Code</Data></Cell>
+                <Cell><Data ss:Type="String">Item Structure</Data></Cell>
+                <Cell><Data ss:Type="String">Stock Opt</Data></Cell>
+                <Cell><Data ss:Type="String">Supp Source</Data></Cell>
+                <Cell><Data ss:Type="String">Canc Bo Mode</Data></Cell>
+                <Cell><Data ss:Type="String">Ordc Perc</Data></Cell>
+                <Cell><Data ss:Type="String">QC Cycle Time for Printed Foil</Data></Cell>
+                <Cell><Data ss:Type="String">Updated By</Data></Cell>
+                <Cell><Data ss:Type="String">Updated Date</Data></Cell>
+                <Cell><Data ss:Type="String">Remarks</Data></Cell>
+                <Cell><Data ss:Type="String">Voidcode</Data></Cell>
+            </Row>
+        </Table>
+        <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+            <Unsynced/>
+            <Selected/>
+            <Panes>
+                <Pane>
+                    <Number>3</Number>
+                    <ActiveRow>1</ActiveRow>
+                    <ActiveCol>1</ActiveCol>
+                </Pane>
+            </Panes>
+            <ProtectObjects>False</ProtectObjects>
+            <ProtectScenarios>False</ProtectScenarios>
+        </WorksheetOptions>
+    </Worksheet>
+</Workbook>
