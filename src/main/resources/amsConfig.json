@@ -7,11 +7,22 @@
     }
   },
   "sendAWInfo": {
+    "mfgLocList": [
+      "Others",
+      "Dadra",
+      "Guwahati",
+      "Halol I",
+      "Halol II",
+      "Jammu",
+      "Karkhadi",
+      "Sikkim I",
+      "Sikkim II",
+      "Silvassa",
+      "Solrex"
+    ],
     "templatePath": "D:\\Insight\\ams\\px\\src\\main\\resources\\template.xml",
     "stagingDir": "D:\\Insight\\ams\\staging",
-    "emails": [
-      "navtej.bassi@insightplm.com"
-    ],
+    "emails": ["navtej.bassi@insightplm.com", "raghunath.n@insightplm.com"],
     "mapping": {
       "foil": {
         "FGCODE": {

@@ -8,4 +8,4 @@ def helper = new AgileHelper(serverInfo: info)
 
 def aas = helper.session.getObject(IChange.OBJECT_TYPE, 'SUN-AAS-039389')
 
-println new DeleteOnRejection().removeAttachments(aas)
+println new SendAWInfo().processAAS(aas)

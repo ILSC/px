@@ -1,19 +1,21 @@
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
-import com.agile.api.*
+import com.agile.api.ChangeConstants
+import com.agile.api.IAttachmentRow
+import com.agile.api.IChange
+import com.agile.api.IItem
+import com.agile.api.IRow
+import com.agile.api.IUser
+import com.agile.api.ItemConstants
+import com.agile.api.UserConstants
 import com.agile.px.IObjectEventInfo
 import groovy.xml.MarkupBuilder
-
 import javax.mail.*
-import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeBodyPart
-import javax.mail.internet.MimeMessage
-import javax.mail.internet.MimeMultipart
+import javax.mail.internet.*
 
 void invokeScript(IBaseScriptObj obj) {
     IObjectEventInfo info = obj.PXEventInfo
     IChange aas = info.dataObject
     List<String> emails = aas.getTable(ChangeConstants.TABLE_WORKFLOW).findAll { IRow r ->
-
         r.getValue(ChangeConstants.ATT_WORKFLOW_WORKFLOW_STATUS).toString() == 'Commercial Team Review' &&
                 r.getValue(ChangeConstants.ATT_WORKFLOW_REVIEWER).toString() in ['AMS-Commercial Team', 'AMS-Commerical Team'] &&
                 r.getValue(ChangeConstants.ATT_WORKFLOW_SIGNOFF_USER) != null
@@ -21,11 +23,9 @@ void invokeScript(IBaseScriptObj obj) {
         IUser user = r.getCell(ChangeConstants.ATT_WORKFLOW_SIGNOFF_USER).referent
         user.getValue(UserConstants.ATT_GENERAL_INFO_EMAIL).toString()
     }
-
     aas.getTable(ChangeConstants.TABLE_AFFECTEDITEMS).referentIterator.each { IItem aw ->
         sendMail(aw, emails)
     }
-
     rows.find { r ->
         IUser user = r.getCell(ChangeConstants.ATT_WORKFLOW_SIGNOFF_USER).referent
         String emailId = user.getValue(UserConstants.ATT_GENERAL_INFO_EMAIL)
@@ -36,10 +36,9 @@ void invokeScript(IBaseScriptObj obj) {
 
 def sendMail(IItem item, List<String> emails) {
     Properties properties = System.properties
-    properties.setProperty('mail.smtp.host', 'Ncorp-hup-01.ranbaxy.com')
+    properties.setProperty('mail.smtp.host', '172.30.58.249')
     properties.setProperty('mail.smtp.port', '25')
     Session session = Session.getDefaultInstance(properties)
-
     MimeMessage msg = new MimeMessage(session)
     msg.setFrom(new InternetAddress('agile.admin@sunpharma.com'))
     emails.each { email ->
@@ -66,23 +65,23 @@ def sendMail(IItem item, List<String> emails) {
 }
 
 def getArtworkSpecifications(IItem item) {
-    def atrMap = ['TitleBlock.Number',
-                  'TitleBlock.Description',
-                  'TitleBlock.Rev Release Date',
-                  'TitleBlock.Tentative Effectivity Date',
-                  'PageTwo.Component Type',
-                  'PageThree.Product Name/Brand Name',
-                  'PageThree.*Generic Name',
-                  'PageThree.*Market',
-                  'PageThree.*Manufacturing Location',
-                  'PageThree.*Strength',
-                  'PageThree.*Dosage Form',
-                  'PageThree.*Pack Size',
-                  'PageThree.*Dimension/Actual Size',
-                  'PageThree.*Board/Substrate',
-                  'PageThree.*Grammage/GSM',
-                  'PageThree.*Design/Style/Folding Pattern',
-                  'PageThree.*Pantone Shade'].collectEntries { a ->
+    def atrMap = ['Title Block.Number',
+                  'Title Block.Description',
+                  'Title Block.Rev Release Date',
+                  'Title Block.Tentative Effectivity Date',
+                  'Page Two.*Component Type',
+                  'Page Three.*Product Name/Brand Name',
+                  'Page Three.*Generic Name',
+                  'Page Three.*Market',
+                  'Page Three.*Manufacturing Location',
+                  'Page Three.*Strength',
+                  'Page Three.*Dosage Form',
+                  'Page Three.*Pack Size',
+                  'Page Three.*Dimension/Actual Size',
+                  'Page Three.*Board/Substrate',
+                  'Page Three.*Grammage/GSM',
+                  'Page Three.*Design/Style/Folding Pattern',
+                  'Page Three.*Pantone Shade'].collectEntries { a ->
         def atr = item.agileClass.getAttribute(a)
         [(atr.name): item.getValue(atr.id)]
     }

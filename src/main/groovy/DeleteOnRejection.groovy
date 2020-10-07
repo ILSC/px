@@ -10,11 +10,10 @@ import java.util.logging.Logger
 
 import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
 import static com.agile.api.CommonConstants.ATT_ATTACHMENTS_ATTACHMENT_TYPE
-import static insight.sun.ams.AMSConfiguration.logger
 
 void invokeScript(IBaseScriptObj obj) {
+    Logger logger = JLogger.getLogger('insight.sun.ams.DeleteOnRejection')
     try {
-        Logger logger = JLogger.getLogger('insight.sun.ams.DeleteOnRejection')
 
         IObjectEventInfo eventInfo = obj.PXEventInfo
         def aas = eventInfo.dataObject
