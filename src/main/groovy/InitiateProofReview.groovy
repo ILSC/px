@@ -4,14 +4,8 @@ import com.agile.api.IAgileList
 import com.agile.api.IChange
 import com.agile.api.IItem
 import com.agile.px.IObjectEventInfo
-import groovy.xml.MarkupBuilder
 import insight.common.logging.JLogger
 
-import javax.mail.*
-import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeBodyPart
-import javax.mail.internet.MimeMessage
-import javax.mail.internet.MimeMultipart
 import java.util.logging.Level
 import java.util.logging.Logger
 

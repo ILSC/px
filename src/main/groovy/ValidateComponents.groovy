@@ -1,10 +1,5 @@
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
-import com.agile.api.ChangeConstants
-import com.agile.api.ICell
-import com.agile.api.IChange
-import com.agile.api.IDataObject
-import com.agile.api.IItem
-import com.agile.api.IRow
+import com.agile.api.*
 import com.agile.px.ISignOffEventInfo
 import insight.common.logging.JLogger
 
@@ -23,7 +18,7 @@ void invokeScript(IBaseScriptObj obj) {
 
         logger.info("Validate components on AAS $aas.name")
 
-        List cmpTypes = atrValue(aas,'Page Three.Components Impacted')
+        List cmpTypes = atrValue(aas, 'Page Three.Components Impacted')
 
         def cmpList = aas.getTable(ChangeConstants.TABLE_AFFECTEDITEMS).referentIterator.collect { IItem i ->
             i.atrValue('Page Three.Component')

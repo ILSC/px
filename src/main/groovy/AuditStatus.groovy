@@ -9,9 +9,7 @@ import java.util.logging.Logger
 import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
 import static com.agile.api.CommonConstants.ATT_ATTACHMENTS_ATTACHMENT_TYPE
 import static com.agile.api.DataTypeConstants.*
-import static com.agile.api.ExceptionConstants.APDM_NOTALLAPPROVERSRESPOND_WARNING
-import static com.agile.api.ExceptionConstants.APDM_MISSINGFIELDS_WARNING
-import static com.agile.api.ExceptionConstants.API_SEE_ROOT_CAUSE
+import static com.agile.api.ExceptionConstants.*
 import static insight.sun.ams.AMSConfiguration.loadCfg
 import static insight.sun.ams.AMSConfiguration.readKey
 
@@ -33,7 +31,7 @@ void invokeScript(IBaseScriptObj obj) {
             } else if (e.errorCode == API_SEE_ROOT_CAUSE) {
                 if (e.rootCause)
                     errors << e.errorCode + ':' + e.rootCause.message
-            } else if (e.errorCode != APDM_NOTALLAPPROVERSRESPOND_WARNING){
+            } else if (e.errorCode != APDM_NOTALLAPPROVERSRESPOND_WARNING) {
                 errors << e.errorCode + ':' + e.message
             }
         }
