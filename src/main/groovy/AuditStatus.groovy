@@ -80,23 +80,56 @@ boolean validateAttrs(IItem aw, IChange aas, Logger logger) {
 }
 
 void validateAttachments(IChange aas, IItem aw, Logger logger) {
-    def mfgLoc = getVal(aas, "Page Three.Manufacturing Location").find { true }.toString()
-    logger.info("Looking up rule for status $aas.status.name and manufacturing location $mfgLoc")
-    def rule = readKey('validateAttachments')?.find { it.step == aas.status.name && mfgLoc in it.mfgLocations }
-    if (rule) {
-        def types = aw.attachments.collect { IRow r ->
-            logger.info("reading type from attachment row")
-            getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString()
+    def workflow = aas.workflow.name
+    def status = aas.workflow.name
+    def chgCat = getVal(aas, "Cover page.Change Category")
+    List mfgLoc = getVal(aas, "Page Three.Manufacturing Location") ?: []
+    def grid = getVal(aas, "Page Three.Type of Grid")
+    def release = getVal(aas, "Page Three.*Type of Release")
+    def markets = getVal(aas, "Page Three.*Market")
+
+    logger.info("Looking up rule for workflow $workflow, status $status, change category $chgCat, " +
+            "manufacturing location $mfgLoc, type of grid $grid, type of release $release, markets $markets")
+
+    def rules = readKey('validateAttachments')?.findAll { rule ->
+        rule.wf == workflow &&
+                rule.step == status &&
+                rule.chgCat == chgCat &&
+                rule.mfg.intersect(mfgLoc) &&
+                rule.typeOfGrid == grid &&
+                rule.typeOfRelease == release &&
+                rule.market in markets
+    }
+
+    if (rules) {
+        def reqAttOnAW = rules*.attOnAW.flatten()
+        if (reqAttOnAW) {
+            def types = aw.attachments.collect { IRow r ->
+                getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString()
+            }
+            logger.info("Found files of type $types attached to $aw.name, $aw.revision")
+            def missing = reqAttOnAW - types
+            if (missing) {
+                throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
+                        "Attachment of type(s) $missing not found on artwork $aw.name.")
+            }
         }
-        logger.info("Found files of type $types attached to $aw.name, $aw.revision")
-        rule.reqTypes.each { type ->
-            logger.info("Checking for file type $type on $aw.name, $aw.revision")
-            if (!(type in types)) {
-                throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Attachment of type $type was not found on artwork $aw.name.")
+
+        def reqAttOnAAS = rules*.attOnAAS.flatten()
+        if (reqAttOnAAS) {
+            def types = aas.attachments.collect { IRow r ->
+                getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString()
+            }
+            logger.info("Found files of type $types attached to $aas.name")
+            def missing = reqAttOnAAS - types
+            if (missing) {
+                throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
+                        "Attachment of type(s) $missing not found on AAS.")
             }
         }
     } else {
-        logger.info("No rule defined for status $aas.status.name and manufacturing location $mfgLoc")
+        logger.info("No rule defined for for workflow $workflow, status $status, change category $chgCat, " +
+                "manufacturing location $mfgLoc, type of grid $grid, type of release $release, markets $markets")
     }
 }
 

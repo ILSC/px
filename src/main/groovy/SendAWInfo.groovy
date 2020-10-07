@@ -3,6 +3,7 @@ import com.agile.api.IChange
 import com.agile.api.IDataObject
 import com.agile.api.IItem
 import com.agile.px.IObjectEventInfo
+import groovy.xml.MarkupBuilder
 import groovy.xml.XmlUtil
 import insight.common.logging.JLogger
 
@@ -96,36 +97,24 @@ def getValue(IItem aw, def atrId, int rowIdx, Map mapping) {
 }
 
 def buildMessageBody(IChange aas) {
-//    def sw = new StringWriter()
-//    MarkupBuilder h = new MarkupBuilder(sw)
-//    h {
-//        p ( class:'MsoNormal' )
-//        table(style: 'width: 90%;') {
-//            thead {
-//                tr {
-//                    th(style: 'width: 35%', 'Attribute')
-//                    th(style: 'width: 65%', 'Value')
-//                }
-//            }
-//            tbody {
-//                atrMap.each { k, v ->
-//                    tr {
-//                        th(style: 'width: 35%', k)
-//                        th(style: 'width: 65%', v)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    sw.toString()
-    '''<p class="MsoNormal">Hi,<br>
-This is an auto-generated mail from AMS<br>
-Please find ERP Code Intimation for the Products <br>
-1. If Track Shelf Life is "YES" / 24 MONTHS, it means Track Shelf Life is "YES" and Shelf Life is "24 MONTHS"<br>
-<br>
-2. If Track Shelf Life is "NO", It means Track Shelf Life is "NO".<u></u><u></u></p>'''
-}
+    def sw = new StringWriter()
+    MarkupBuilder h = new MarkupBuilder(sw)
+    h.p (class:'MsoNormal') {
+            mkp.yield 'Hi,'
+            br()
+            mkp.yield 'This is an auto-generated mail from AMS'
+            br()
+            mkp.yield 'Please find ERP Code Intimation for the Products'
+            br()
+            mkp.yield '1. If Track Shelf Life is "YES" / 24 MONTHS, it means Track Shelf Life is "YES" and Shelf Life is "24 MONTHS"'
+            br()
+            br()
+            mkp.yield '2. If Track Shelf Life is "NO", It means Track Shelf Life is "NO".'
+            u()
+        }
 
+    sw.toString()
+}
 
 File getParentDir(String stagingDir) {
     File file = new File(stagingDir)
