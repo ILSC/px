@@ -8,7 +8,244 @@
   },
   "sendAWInfo": {
     "templatePath": "D:\\Insight\\ams\\px\\src\\main\\resources\\template.xml",
-    "stagingDir": "D:\\Insight\\ams\\staging"
+    "stagingDir": "D:\\Insight\\ams\\staging",
+    "emails": [
+      "navtej.bassi@insightplm.com"
+    ],
+    "mapping": {
+      "foil": {
+        "FGCODE": {
+          "field": "Title Block.Number"
+        },
+        "COMPONENT": {
+          "field": "Page Two.*Component Type"
+        },
+        "Description": {
+          "field": "Title Block.Description"
+        },
+        "ERP Code": {
+          "field": "Page Three.SAP Item code/Metis Item Code"
+        },
+        "Product Name": {
+          "field": "Page Three.*Product Name/Brand Name"
+        },
+        "Dosage Form": {
+          "field": "Page Three.*Dosage Form"
+        },
+        "Type": {
+          "field": "Page Two.*Component Type"
+        },
+        "Description Component": {
+          "field": "Page Three.Description Component"
+        },
+        "Pack Details": {
+          "field": "Page Three.*Pack Type"
+        },
+        "Dimension": {
+          "field": "Page Three.*Dimension/Actual Size"
+        },
+        "Guage": {
+          "field": "Page Three.*Grammage/GSM"
+        },
+        "Colour": {
+          "field": "Page Three.*Colour Schema"
+        },
+        "Rate Contract Number": {
+          "field": "Page Three.Rate Contract Number"
+        },
+        "UOM": {
+          "field": "Page Three.UOM"
+        },
+        "Design": {
+          "field": "Page Three.*Design/Style/Folding Pattern"
+        },
+        "Grp CD": {
+          "field": "Page Three.Grp CD"
+        },
+        "S Grp CD": {
+          "field": "Page Three.S Grp CD"
+        },
+        "Actual on": {
+          "field": "Page Three.Actual on"
+        },
+        "Issue Criteria": {
+          "value": "W"
+        },
+        "Unit Rate Unit Purchase": {
+          "value": "KGS"
+        },
+        "Qty and Rcp total percent": {
+          "value": "30"
+        },
+        "Location Code": {
+          "value": "QUAR"
+        },
+        "Item Ser": {
+          "value": "PM1"
+        },
+        "Location Type": {
+          "value": "N"
+        },
+        "Track Shelf Life": {
+          "value": "NO"
+        },
+        "QC Required": {
+          "value": "NO"
+        },
+        "QC Required Type": {
+          "value": "L"
+        },
+        "Pack Code": {
+          "value": "DUMMY"
+        },
+        "Item Structure": {
+          "value": "S"
+        },
+        "Stock Opt": {
+          "value": "2"
+        },
+        "Supp Source": {
+          "value": "P"
+        },
+        "Canc Bo Mode": {
+          "value": "A"
+        },
+        "Ordc Perc": {
+          "value": "10"
+        },
+        "QC Cycle Time for Printed Foil": {
+          "value": "1095"
+        },
+        "Updated By": {
+          "field": "Page Three.Updated By"
+        },
+        "Updated Date": {
+          "field": "Page Three.Updated Date"
+        },
+        "Remarks": {
+          "field": "Page Three.Remarks"
+        },
+        "Voidcode": {
+          "field": "Page Three.Supersedes"
+        }
+      },
+      "other": {
+        "FGCODE": {
+          "field": "Title Block.Number"
+        },
+        "COMPONENT": {
+          "field": "Page Two.*Component Type"
+        },
+        "Description": {
+          "field": "Title Block.Description"
+        },
+        "ERP Code": {
+          "field": "Page Three.SAP Item code/Metis Item Code"
+        },
+        "Product Name": {
+          "field": "Page Three.*Product Name/Brand Name"
+        },
+        "Dosage Form": {
+          "field": "Page Three.*Dosage Form"
+        },
+        "Type": {
+          "field": "Page Two.*Component Type"
+        },
+        "Description Component": {
+          "field": "Page Three.Description Component"
+        },
+        "Pack Details": {
+          "field": "Page Three.*Pack Type"
+        },
+        "Dimension": {
+          "field": "Page Three.*Dimension/Actual Size"
+        },
+        "Guage": {
+          "field": "Page Three.*Grammage/GSM"
+        },
+        "Colour": {
+          "field": "Page Three.*Colour Schema"
+        },
+        "Rate Contract Number": {
+          "field": "Page Three.Rate Contract Number"
+        },
+        "UOM": {
+          "field": "Page Three.UOM"
+        },
+        "Design": {
+          "field": "Page Three.*Design/Style/Folding Pattern"
+        },
+        "Grp CD": {
+          "field": "Page Three.Grp CD"
+        },
+        "S Grp CD": {
+          "field": "Page Three.S Grp CD"
+        },
+        "Actual on": {
+          "field": "Page Three.Actual on"
+        },
+        "Issue Criteria": {
+          "value": "I"
+        },
+        "Unit Rate Unit Purchase": {
+          "value": "NO"
+        },
+        "Qty and Rcp total percent": {
+          "value": "20"
+        },
+        "Location Code": {
+          "value": "QUAR"
+        },
+        "Item Ser": {
+          "value": "PM1"
+        },
+        "Location Type": {
+          "value": "N"
+        },
+        "Track Shelf Life": {
+          "value": "NO"
+        },
+        "QC Required": {
+          "value": "NO"
+        },
+        "QC Required Type": {
+          "value": "L"
+        },
+        "Pack Code": {
+          "value": "DUMMY"
+        },
+        "Item Structure": {
+          "value": "S"
+        },
+        "Stock Opt": {
+          "value": "2"
+        },
+        "Supp Source": {
+          "value": "P"
+        },
+        "Canc Bo Mode": {
+          "value": "A"
+        },
+        "Ordc Perc": {
+          "value": "10"
+        },
+        "QC Cycle Time for Printed Foil": {
+          "value": "NA"
+        },
+        "Updated By": {
+          "field": "Page Three.Updated By"
+        },
+        "Updated Date": {
+          "field": "Page Three.Updated Date"
+        },
+        "Remarks": {
+          "field": "Page Three.Remarks"
+        },
+        "Voidcode": {
+          "field": "Page Three.Supersedes"
+        }
+      }
+    }
   },
   "propagateAttrs": [
     {
