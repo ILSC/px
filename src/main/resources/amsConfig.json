@@ -355,7 +355,7 @@
         "in": [],
         "notIn": [
           "India",
-          "US"
+          "USA"
         ]
       },
       "attOnAAS": [
@@ -385,7 +385,7 @@
         "in": [],
         "notIn": [
           "India",
-          "US"
+          "USA"
         ]
       },
       "attOnAAS": [],
@@ -393,6 +393,1630 @@
         "Draft File",
         "Pack Profile",
         "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "MPC",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Request",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [
+        "Text File",
+        "Approved SRF"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Registration",
+      "step": "Artwork Upload",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "Pack Profile",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Registration",
+      "step": "Artwork Upload",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "MPC",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Submission",
+      "step": "Artwork Request",
+      "chgCat": "Submission",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": [
+        {
+          "in": [],
+          "notIn": [
+            "India",
+            "USA"
+          ]
+        }
+      ],
+      "attOnAAS": [
+        "Text File",
+        "Stability Data"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Submission",
+      "step": "Artwork Upload",
+      "chgCat": "Submission",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": [
+        {
+          "in": [],
+          "notIn": [
+            "India",
+            "USA"
+          ]
+        }
+      ],
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Request",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [
+        "Text File",
+        "Reference File/Existing Artwork"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "Pack Profile",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "MPC",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Registration",
+      "step": "Artwork Request",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [
+        "Text File",
+        "Approved SRF",
+        "Reference File/Existing Artwork"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Registration",
+      "step": "Artwork Upload",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "Pack Profile",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Registration",
+      "step": "Artwork Upload",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "MPC",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Request",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [
+        "Text File"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "Pack Profile",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "MPC",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Request",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [
+        "Text File"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "Pack Profile",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "MPC",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Request",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Laon License",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [
+        "Text File"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa"
+      ],
+      "typeOfGrid": "Laon License",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "Pack Profile",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Laon License",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "MPC",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Request",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Laon License",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Text File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa"
+      ],
+      "typeOfGrid": "Laon License",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "Pack Profile",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "Artwork Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Laon License",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File",
+        "MPC",
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Art Request",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [
+        "Text File",
+        "Keyline"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Art Request",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [
+        "Text File",
+        "Keyline"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Art Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File"
+      ]
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Art Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File"
+      ]
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Packaging Reviewer",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "New,Eixsitng",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": []
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Art Request",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "New,Eixsitng",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India"
+        ]
+      },
+      "attOnAAS": [
+        "Text File",
+        "Keyline"
+      ],
+      "attOnAW": []
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Art Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File"
+      ]
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Art Upload",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Draft File"
+      ]
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Packaging Reviewer",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Process File"
+      ]
+    },
+    {
+      "wf": "Outsource Products marketed in India & Overseas",
+      "step": "Packaging Reviewer",
+      "chgCat": "Commercial",
+      "mfg": [
+        "Others"
+      ],
+      "typeOfGrid": "Outsourced",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India"
+        ]
+      },
+      "attOnAAS": [],
+      "attOnAW": [
+        "Process File"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "CF Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "roles": [
+        "PDD",
+        "RA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "QA Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "roles": [
+        "QA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Registration",
+      "step": "CF Review",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "roles": [
+        "PDD",
+        "RA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Registration",
+      "step": "QA Review",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "roles": [
+        "QA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Submission",
+      "step": "CF Review",
+      "chgCat": "Submission",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "roles": [
+        "PDD",
+        "RA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "CF Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "roles": [
+        "PDD",
+        "RA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "QA Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "roles": [
+        "QA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Registration",
+      "step": "CF Review",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "roles": [
+        "PDD",
+        "RA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market-Registration",
+      "step": "QA Review",
+      "chgCat": "Registration",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [],
+        "notIn": [
+          "India",
+          "USA"
+        ]
+      },
+      "roles": [
+        "QA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "CF Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "FDD",
+        "PDD",
+        "RA",
+        "Marketing"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "QA Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "QA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "CF Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "FDD",
+        "PDD",
+        "RA",
+        "Marketing"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "QA Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "In-House",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "QA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "CF Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Loan-License",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "FDD",
+        "PDD",
+        "RA",
+        "Marketing"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "QA Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Loan-License",
+      "typeOfRelease": "New",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "QA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "CF Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Loan-License",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "FDD",
+        "PDD",
+        "RA",
+        "Marketing"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "QA Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Loan-License",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "QA"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "CF Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Loan-License",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "FDD",
+        "PDD",
+        "RA",
+        "Marketing"
+      ]
+    },
+    {
+      "wf": "Products Manufactured in Sun and All Market",
+      "step": "QA Review",
+      "chgCat": "Commerical",
+      "mfg": [
+        "Dadra",
+        "Guwahati",
+        "Halol I",
+        "Halol II",
+        "Jammu",
+        "Karkhadi",
+        "Sikkim I",
+        "Sikkim II",
+        "Silvassa",
+        "Dewas",
+        "Goa",
+        "Mohali",
+        "Paonta",
+        "RXIL",
+        "Solrex"
+      ],
+      "typeOfGrid": "Loan-License",
+      "typeOfRelease": "Existing",
+      "market": {
+        "in": [
+          "India"
+        ],
+        "notIn": [
+        ]
+      },
+      "roles": [
+        "QA"
       ]
     }
   ]

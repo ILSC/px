@@ -1,5 +1,7 @@
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
 import com.agile.api.*
+import com.agile.px.EventConstants
+import com.agile.px.IEventInfo
 import com.agile.px.ISignOffEventInfo
 import insight.common.logging.JLogger
 
@@ -18,12 +20,12 @@ void invokeScript(IBaseScriptObj obj) {
     try {
         logger.info('Loading AMS Configuration')
         loadCfg()
-        ISignOffEventInfo eventInfo = obj.PXEventInfo
+        def eventInfo = obj.PXEventInfo
         logger.info('Getting AAS from event info')
         IChange aas = eventInfo.dataObject
-        logger.info("Performing Audit on AAS $aas.name")
+        logger.info("Performing Audit on AAS $aas.name, status: $aas.status")
 
-        auditAAS(aas, logger)
+        auditAAS(aas, eventInfo.eventType == EventConstants.EVENT_APPROVE_FOR_WORKFLOW, logger)
     } catch (Exception ex) {
         obj.logFatal([ex.message, ex.cause?.message].join(' '))
         logger.log(Level.SEVERE, 'Failed to perform audit', ex)
@@ -31,7 +33,7 @@ void invokeScript(IBaseScriptObj obj) {
     }
 }
 
-void auditAAS(IChange aas, Logger logger) {
+void auditAAS(IChange aas, boolean isApprovalEvent, Logger logger) {
     def errors = []
     aas.audit(false).values().flatten().each { APIException e ->
         if (e.errorCode == APDM_MISSINGFIELDS_WARNING) {
@@ -40,7 +42,7 @@ void auditAAS(IChange aas, Logger logger) {
         } else if (e.errorCode == API_SEE_ROOT_CAUSE) {
             if (e.rootCause)
                 errors << e.errorCode + ':' + e.rootCause.message
-        } else if (e.errorCode != APDM_NOTALLAPPROVERSRESPOND_WARNING) {
+        } else if (!(e.errorCode in [APDM_NOTALLAPPROVERSRESPOND_WARNING, 1099])) {
             errors << e.errorCode + ':' + e.message
         }
     }
@@ -53,22 +55,28 @@ void auditAAS(IChange aas, Logger logger) {
         throw ex
     }
 
-    logger.info("Getting attached artwork from $aas.name")
-    def awList = getArtWorks(aas)
+    if(isApprovalEvent) {
+        logger.info("Getting attached artwork from $aas.name")
+        def awList = getArtWorks(aas)
 
-    if (!awList?.size()) {
-        def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Couldn't find any atrwork attached to the AAS.")
-        logger.log(Level.SEVERE, ex.message, ex)
-        throw ex
+        if (!awList?.size()) {
+            def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Couldn't find any atrwork attached to the AAS.")
+            logger.log(Level.SEVERE, ex.message, ex)
+            throw ex
+        }
+
+        awList.each { aw ->
+            logger.info("Validating attributes on $aw.name and $aas.name")
+            validateAttrs(aw, aas, logger)
+
+            logger.info("Validating attachments on $aw.name")
+            validateAttachments(aas, aw, logger)
+        }
+    }else{
+        validateAttachments(aas, null, logger)
     }
 
-    awList.each { aw ->
-        logger.info("Validating attributes on $aw.name and $aas.name")
-        validateAttrs(aw, aas, logger)
 
-        logger.info("Validating attachments on $aw.name")
-        validateAttachments(aas, aw, logger)
-    }
 }
 
 boolean validateAttrs(IItem aw, IChange aas, Logger logger) {
@@ -108,7 +116,7 @@ void validateAttachments(IChange aas, IItem aw, Logger logger) {
 
     if (rules) {
         def reqAttOnAW = rules*.attOnAW.flatten()
-        if (reqAttOnAW) {
+        if (aw && reqAttOnAW) {
             def types = aw.attachments.collect { IRow r ->
                 getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString()
             }
