@@ -1,5 +1,4 @@
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
-import com.agile.api.ICell
 import com.agile.api.IChange
 import com.agile.px.IUpdateEventInfo
 
@@ -18,7 +17,7 @@ void invokeScript(IBaseScriptObj obj) {
     logger.info("Implementation date for AAS $change.name should be on or after $implDate")
 
     Integer atrId =  change.agileClass.getAttribute('Page Three.Implementation Schedule Date').id
-    ICell dirtyCell = eventInfo.getCell(atrId)
+    def dirtyCell = eventInfo.getCell(atrId)
 
     if(dirtyCell) {
         Date newImplDate =dirtyCell.getValue()

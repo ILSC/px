@@ -1,17 +1,18 @@
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
 import com.agile.api.*
-import com.agile.px.EventConstants
-import com.agile.px.IEventInfo
-import com.agile.px.ISignOffEventInfo
+import com.agile.px.IObjectEventInfo
 import insight.common.logging.JLogger
 
 import java.util.logging.Level
 import java.util.logging.Logger
 
-import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
+import static com.agile.api.ChangeConstants.*
 import static com.agile.api.CommonConstants.ATT_ATTACHMENTS_ATTACHMENT_TYPE
+import static com.agile.api.CommonConstants.TABLE_ATTACHMENTS
 import static com.agile.api.DataTypeConstants.*
 import static com.agile.api.ExceptionConstants.*
+import static com.agile.api.FileFolderConstants.*
+import static com.agile.px.EventConstants.EVENT_APPROVE_FOR_WORKFLOW
 import static insight.sun.ams.AMSConfiguration.loadCfg
 import static insight.sun.ams.AMSConfiguration.readKey
 
@@ -20,12 +21,12 @@ void invokeScript(IBaseScriptObj obj) {
     try {
         logger.info('Loading AMS Configuration')
         loadCfg()
-        def eventInfo = obj.PXEventInfo
+        IObjectEventInfo eventInfo = obj.PXEventInfo
         logger.info('Getting AAS from event info')
         IChange aas = eventInfo.dataObject
         logger.info("Performing Audit on AAS $aas.name, status: $aas.status")
 
-        auditAAS(aas, eventInfo.eventType == EventConstants.EVENT_APPROVE_FOR_WORKFLOW, logger)
+        auditAAS(aas, eventInfo.eventType == EVENT_APPROVE_FOR_WORKFLOW, logger)
     } catch (Exception ex) {
         obj.logFatal([ex.message, ex.cause?.message].join(' '))
         logger.log(Level.SEVERE, 'Failed to perform audit', ex)
@@ -55,7 +56,7 @@ void auditAAS(IChange aas, boolean isApprovalEvent, Logger logger) {
         throw ex
     }
 
-    if(isApprovalEvent) {
+    if (isApprovalEvent) {
         logger.info("Getting attached artwork from $aas.name")
         def awList = getArtWorks(aas)
 
@@ -64,86 +65,135 @@ void auditAAS(IChange aas, boolean isApprovalEvent, Logger logger) {
             logger.log(Level.SEVERE, ex.message, ex)
             throw ex
         }
-
-        awList.each { aw ->
-            logger.info("Validating attributes on $aw.name and $aas.name")
-            validateAttrs(aw, aas, logger)
-
-            logger.info("Validating attachments on $aw.name")
-            validateAttachments(aas, aw, logger)
-        }
-    }else{
-        validateAttachments(aas, null, logger)
+        validateAttrs(awList, aas, logger)
+        def aasInfo = getAASInfo(aas)
+        validateAttachments(aas, awList, aasInfo, logger)
+        validateChecklist(aas, awList, aasInfo, logger)
+    } else {
+        validateAttachments(aas, [], aasInfo, logger)
     }
-
-
 }
 
-boolean validateAttrs(IItem aw, IChange aas, Logger logger) {
-    readKey('propagateAttrs')?.each { atr ->
-        if (getVal(aw, atr.aw) != getVal(aas, atr.aas)) {
-            logger.info("Value for attribute $atr.aw not matching")
-            def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. Value for attribute $atr.aw on artwork is not matching with AAS")
-            logger.log(Level.SEVERE, ex.message, ex)
-            throw ex
+Map getAASInfo(IChange aas) {
+    [workflow: ATT_COVER_PAGE_WORKFLOW, status: ATT_COVER_PAGE_STATUS, chgCat: ATT_COVER_PAGE_CHANGE_CATEGORY,
+     mfgLoc  : 'Page Three.*Manufacturing Location', grid: 'Page Three.Type of Grid',
+     markets : 'Page Three.*Market', release: 'Page Three.*Type of Release'].collectEntries { k, v ->
+        [(k): getVal(aas, v)]
+    }
+}
+
+boolean validateAttrs(List<IItem> awList, IChange aas, Logger logger) {
+    List attrs = readKey('propagateAttrs')
+    awList.each { aw ->
+        logger.info("Validating attributes on $aw.name and $aas.name")
+        attrs?.each { atr ->
+            if (getVal(aw, atr.aw) != getVal(aas, atr.aas)) {
+                logger.info("Value for attribute $atr.aw not matching")
+                def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
+                        "Value for attribute $atr.aw on artwork is not matching with AAS")
+                logger.log(Level.SEVERE, ex.message, ex)
+                throw ex
+            }
         }
     }
     return true
 }
 
-void validateAttachments(IChange aas, IItem aw, Logger logger) {
-    def workflow = aas.workflow.name
-    def status = aas.status.name
-    def chgCat = getVal(aas, "Cover Page.Change Category")
-    List mfgLoc = getVal(aas, "Page Three.*Manufacturing Location") ?: []
-    def grid = getVal(aas, "Page Three.Type of Grid")
-    def release = getVal(aas, "Page Three.*Type of Release")
-    def markets = getVal(aas, "Page Three.*Market")
-
-    logger.info("Looking up rule for workflow $workflow, status $status, change category $chgCat, " +
-            "manufacturing location $mfgLoc, type of grid $grid, type of release $release, markets $markets")
-
-    def rules = readKey('validateAttachments')?.findAll { rule ->
-        rule.wf == workflow &&
-                rule.step == status &&
-                rule.chgCat == chgCat &&
-                rule.mfg.intersect(mfgLoc) &&
-                rule.typeOfGrid == grid &&
-                rule.typeOfRelease == release &&
-                ((rule.market.in && rule.market.in.intersect(markets)) ||
-                        (rule.market.notIn && !rule.market.notIn.intersect(markets)))
-    }
+void validateChecklist(IChange aas, List<IItem> awList, Map ai, Logger logger) {
+    def rules = getMatchingRules('checklist', ai, logger)
 
     if (rules) {
-        def reqAttOnAW = rules*.attOnAW.flatten()
-        if (aw && reqAttOnAW) {
-            def types = aw.attachments.collect { IRow r ->
-                getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString()
+        List<String> roles = rules*.roles.flatten()
+        if (roles) {
+            IFileFolder ff = aas.relationship.referentIterator.find { IDataObject obj ->
+                obj.agileClass.isSubclassOf(aas.session.adminInstance.getAgileClass(CLASS_FILE_FOLDERS_CLASS))
+                        && obj.getValue(ATT_TITLE_BLOCK_DESCRIPTION) == 'Checklist'
             }
-            logger.info("Found files of type $types attached to $aw.name, $aw.revision")
-            def missing = reqAttOnAW - types
-            if (missing) {
+            List cmpChecklist = []
+            if (ff) {
+                cmpChecklist.addAll(ff.getTable(TABLE_FILES).findAll { IRow r ->
+                    r.getValue('CheckListStatus').toString() == 'Accepted'
+                }.collect { IRow r ->
+                    r.getValue(ATT_FILES_FILE_NAME).toString()
+                })
+            } else {
                 throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
-                        "Attachment of type(s) $missing not found on artwork $aw.name.")
+                        "Checklist for role(s) $roles not completed.")
+            }
+            aas.relationship.find { IDataObject obj -> obj.agileClass.isSubclassOf() }
+            awList?.each { aw ->
+                aw.attachments.findAll { IRow r -> getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE) == 'Draft File' }
+                        .each { IAttachmentRow ar ->
+                            def attrs = [ar.referent.name, ar.referent.currentVersion, ar.fileId]
+                            roles.each { role ->
+                                String name = [role, *attrs].join('_') + '.json'
+                                if (!cmpChecklist.contains(name)) {
+                                    throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
+                                            "Checklist for role $role not found on artwork $aw.name.")
+                                }
+                            }
+                        }
+            }
+        }
+    } else {
+        logger.info("No rule defined for for workflow $ai.workflow, status $ai.status, change category $ai.chgCat, " +
+                "manufacturing location $ai.mfgLoc, type of grid $ai.grid, type of release $ai.release, markets $ai.markets")
+    }
+}
+
+List getMatchingRules(String key, Map ai, Logger logger) {
+    logger.info("Looking up rule for workflow $ai.workflow, status $ai.status, change category $ai.chgCat, " +
+            "manufacturing location $ai.mfgLoc, type of grid $ai.grid, type of release $ai.release, markets $ai.markets")
+
+    readKey(key)?.findAll { rule ->
+        rule.wf == ai.workflow &&
+                rule.step == ai.status &&
+                rule.chgCat == ai.chgCat &&
+                rule.mfg.intersect(ai.mfgLoc) &&
+                rule.typeOfGrid == ai.grid &&
+                rule.typeOfRelease == ai.release &&
+                ((rule.market.in && rule.market.in.intersect(ai.markets)) ||
+                        (rule.market.notIn && !rule.market.notIn.intersect(ai.markets)))
+    }
+}
+
+void validateAttachments(IChange aas, List<IItem> awList, Map ai, Logger logger) {
+    def rules = getMatchingRules('validateAttachments', ai, logger)
+
+    if (rules) {
+        List<String> reqAttOnAW = rules*.attOnAW.flatten()
+
+        if (reqAttOnAW) {
+            awList?.each { aw ->
+                aw.setRevision(aas)
+                def missing = checkAttachments(aw, reqAttOnAW, logger)
+                if (missing) {
+                    throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
+                            "Attachment of type(s) $missing not found on artwork $aw.name.")
+                }
             }
         }
 
-        def reqAttOnAAS = rules*.attOnAAS.flatten()
+        List<String> reqAttOnAAS = rules*.attOnAAS.flatten()
         if (reqAttOnAAS) {
-            def types = aas.attachments.collect { IRow r ->
-                getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString()
-            }
-            logger.info("Found files of type $types attached to $aas.name")
-            def missing = reqAttOnAAS - types
+            def missing = checkAttachments(aas, reqAttOnAAS, logger)
             if (missing) {
                 throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
                         "Attachment of type(s) $missing not found on AAS.")
             }
         }
     } else {
-        logger.info("No rule defined for for workflow $workflow, status $status, change category $chgCat, " +
-                "manufacturing location $mfgLoc, type of grid $grid, type of release $release, markets $markets")
+        logger.info("No rule defined for for workflow $ai.workflow, status $ai.status, change category $ai.chgCat, " +
+                "manufacturing location $ai.mfgLoc, type of grid $ai.grid, type of release $ai.release, markets $ai.markets")
     }
+}
+
+boolean checkAttachments(IDataObject dataObject, List<String> attTypes, Logger logger) {
+    def types = dataObject.getTable(TABLE_ATTACHMENTS).collect { IRow r ->
+        getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE)
+    }
+    logger.info("Found files of type $types attached to $dataObject.name")
+    attTypes - types
 }
 
 List<IItem> getArtWorks(IChange aas) {
