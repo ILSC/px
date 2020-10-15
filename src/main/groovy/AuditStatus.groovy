@@ -103,7 +103,8 @@ void validateChecklist(IChange aas, List<IItem> awList, Map ai, Logger logger) {
     def rules = getMatchingRules('checklist', ai, logger)
 
     if (rules) {
-        List<String> roles = rules*.roles.flatten()
+        def roles = getRoles(aas.session.currentUser, rules*.roles.flatten())
+
         if (roles) {
             IFileFolder ff = aas.relationship.referentIterator.find { IDataObject obj ->
                 obj.agileClass.isSubclassOf(aas.session.adminInstance.getAgileClass(CLASS_FILE_FOLDERS_CLASS))
@@ -218,4 +219,22 @@ def getVal(IAgileObject obj, def atrId) {
         default:
             return cell.value
     }
+}
+
+def getRoles(IUser user, List<String> rolesInRule) {
+    def roles = []
+    def config = readKey('checkListGroups')
+    user.getTable(UserConstants.TABLE_USERGROUP).referentIterator.each { IUserGroup ug ->
+        if (ug.name in config.fddGroups)
+            roles << 'FDD'
+        if (ug.name in config.raGroups)
+            roles << 'RA'
+        if (ug.name in config.qaGroups)
+            roles << 'QA'
+        if (ug.name in config.pddGroups)
+            roles << 'PDD'
+        if (ug.name in config.mktGroups)
+            roles << 'Marketing'
+    }
+    rolesInRule.intersect(roles).unique()
 }

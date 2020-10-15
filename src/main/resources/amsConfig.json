@@ -2019,5 +2019,50 @@
         "QA"
       ]
     }
-  ]
+  ],
+  "checkListGroups": {
+    "fddGroups": [
+      "FDD",
+      "FDD-ORALS",
+      "FDD-Topical",
+      "FDD-Non Oral",
+      "FDD-Neutraceuticals"
+    ],
+    "pddGroups": [
+      "PDD",
+      "Plant-Pkg-Dadra-Reviewer",
+      "Plant-Pkg-Dewas-Reviewer",
+      "Plant-Pkg-Goa-Reviewer",
+      "Plant-Pkg-Guwahati-Reviewer",
+      "Plant-Pkg-Halol I-Reviewer",
+      "Plant-Pkg-Halol II-Reviewer",
+      "Plant-Pkg-Jammu-Reviewer",
+      "Plant-Pkg-Karkhadi-Reviewer",
+      "Plant-Pkg-Mohali-Reviewer",
+      "Plant-Pkg-OHM Labs Inc - Livingston Avenue-Reviewer",
+      "Plant-Pkg-OHM labs Inc - Terminal Road-Reviewer",
+      "Plant-Pkg-Others-Reviewer",
+      "Plant-Pkg-Paonta-Reviewer",
+      "Plant-Pkg-RXIL-Reviewer",
+      "Plant-Pkg-Sikkim I-Reviewer",
+      "Plant-Pkg-Sikkim II-Reviewer",
+      "Plant-Pkg-Silvassa-Reviewer",
+      "Plant-Pkg-Solrex-Reviewer",
+      "Plant-Pkg-Terapia-Reviewer"
+    ],
+    "raGroups": [
+      "RA",
+      "RA-Australia-Reviewer",
+      "RA-UK-Reviewer"
+    ],
+    "mktGroups": [
+      "Mkt-Australia-Reviewer",
+      "Mkt-UK-Reviewer"
+    ],
+    "qaGroups": [
+      "QA",
+      "QA-Dewas-Reviewer",
+      "QA-Sikkim I-Reviewer"
+    ]
+  }
 }
