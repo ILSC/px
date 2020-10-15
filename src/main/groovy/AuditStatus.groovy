@@ -55,7 +55,7 @@ void auditAAS(IChange aas, boolean isApprovalEvent, Logger logger) {
         logger.log(Level.SEVERE, ex.message, ex)
         throw ex
     }
-
+    def aasInfo = getAASInfo(aas)
     if (isApprovalEvent) {
         logger.info("Getting attached artwork from $aas.name")
         def awList = getArtWorks(aas)
@@ -66,7 +66,7 @@ void auditAAS(IChange aas, boolean isApprovalEvent, Logger logger) {
             throw ex
         }
         validateAttrs(awList, aas, logger)
-        def aasInfo = getAASInfo(aas)
+
         validateAttachments(aas, awList, aasInfo, logger)
         validateChecklist(aas, awList, aasInfo, logger)
     } else {
@@ -103,12 +103,11 @@ void validateChecklist(IChange aas, List<IItem> awList, Map ai, Logger logger) {
     def rules = getMatchingRules('checklist', ai, logger)
 
     if (rules) {
-        def roles = getRoles(aas.session.currentUser, rules*.roles.flatten())
-
+        List<String> roles = getRoles(aas.session.currentUser, rules*.roles.flatten())
         if (roles) {
             IFileFolder ff = aas.relationship.referentIterator.find { IDataObject obj ->
-                obj.agileClass.isSubclassOf(aas.session.adminInstance.getAgileClass(CLASS_FILE_FOLDERS_CLASS))
-                        && obj.getValue(ATT_TITLE_BLOCK_DESCRIPTION) == 'Checklist'
+                obj.agileClass.isSubclassOf(aas.session.adminInstance.getAgileClass(CLASS_FILE_FOLDERS_CLASS)) &&
+                        obj.getValue(ATT_TITLE_BLOCK_DESCRIPTION) == 'Checklist'
             }
             List cmpChecklist = []
             if (ff) {
@@ -121,7 +120,7 @@ void validateChecklist(IChange aas, List<IItem> awList, Map ai, Logger logger) {
                 throw new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
                         "Checklist for role(s) $roles not completed.")
             }
-            aas.relationship.find { IDataObject obj -> obj.agileClass.isSubclassOf() }
+
             awList?.each { aw ->
                 aw.attachments.findAll { IRow r -> getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE) == 'Draft File' }
                         .each { IAttachmentRow ar ->
@@ -189,7 +188,7 @@ void validateAttachments(IChange aas, List<IItem> awList, Map ai, Logger logger)
     }
 }
 
-boolean checkAttachments(IDataObject dataObject, List<String> attTypes, Logger logger) {
+def checkAttachments(IDataObject dataObject, List<String> attTypes, Logger logger) {
     def types = dataObject.getTable(TABLE_ATTACHMENTS).collect { IRow r ->
         getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE)
     }

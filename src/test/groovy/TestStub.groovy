@@ -10,7 +10,7 @@ def info = new AgileServerInfo(URL: 'http://ncorp-amstest.ranbaxy.com:7001/Agile
 
 def helper = new AgileHelper(serverInfo: info)
 
-def aas = helper.session.getObject(IChange.OBJECT_TYPE, 'SUN-AAS-039407')
+IChange aas = helper.session.getObject(IChange.OBJECT_TYPE, 'SUN-AAS-039439')
 Logger logger = Logger.getLogger('insight.sun.ams.AuditStatus')
 
-new AuditStatus().auditAAS(aas, false, logger)
+new AuditStatus().auditAAS(aas, true, logger)
