@@ -25,3 +25,6 @@ nbdist/
 
 out/
 .DS_Store
+libs/AgileAPI.jar
+libs/pxapi.jar
+logs/
