@@ -19,7 +19,7 @@ void invokeScript(IBaseScriptObj obj) {
         eventInfo.table.iterator().each { IEventDirtyRowUpdate r ->
             if (r.action == 0) {
                 IItem aw = r.referent
-                copyValues(aw, aas, logger)
+                copyValues(aas, aw, logger)
                 aw.refresh()
             }
         }
@@ -34,6 +34,7 @@ void copyValues(IDataObject source, IDataObject target, Logger logger) {
     logger.info('Loading AMS Configuration')
     loadCfg()
     readKey('propagateAttrs')?.each { atr ->
+        logger.info("Copying attribute ${atr."$source.agileClass.APIName"}")
         def val = getVal(source, atr."$source.agileClass.APIName")
         logger.info("Setting attribute $atr.aas on AAS to $val")
         setVal(target, atr."$target.agileClass.APIName", val)

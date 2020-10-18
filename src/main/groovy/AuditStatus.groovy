@@ -87,7 +87,7 @@ boolean validateAttrs(List<IItem> awList, IChange aas, Logger logger) {
     awList.each { aw ->
         logger.info("Validating attributes on $aw.name and $aas.name")
         attrs?.each { atr ->
-            if (getVal(aw, atr.aw) != getVal(aas, atr.aas)) {
+            if (getVal(aw, atr."$aw.agileClass.APIName") != getVal(aas, atr."$aas.agileClass.APIName")) {
                 logger.info("Value for attribute $atr.aw not matching")
                 def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
                         "Value for attribute $atr.aw on artwork is not matching with AAS")
