@@ -6,6 +6,10 @@
       "itmService": "SI_OB_S_ItemMaster"
     }
   },
+  "impDateVal": {
+    "offsetInDays": 20,
+    "overrideGrpName": "Administrator"
+  },
   "sendAWInfo": {
     "mfgLocList": [
       "Others",
