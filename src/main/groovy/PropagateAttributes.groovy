@@ -8,11 +8,12 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 import static com.agile.api.DataTypeConstants.*
-import static insight.sun.ams.AMSConfiguration.*
+import static insight.sun.ams.AMSConfiguration.loadCfg
+import static insight.sun.ams.AMSConfiguration.readKey
 
 void invokeScript(IBaseScriptObj obj) {
+    Logger logger = JLogger.getLogger('insight.sun.ams.PropagateAttributes')
     try {
-        Logger logger = JLogger.getLogger('insight.sun.ams.PropagateAttributes')
 
         IUpdateTableEventInfo eventInfo = obj.PXEventInfo
         IChange aas = eventInfo.dataObject
@@ -31,13 +32,17 @@ void invokeScript(IBaseScriptObj obj) {
 }
 
 void copyValues(IDataObject source, IDataObject target, Logger logger) {
+    String srcClass = source.agileClass.APIName
+    String tarClass = target.agileClass.APIName
+
     logger.info('Loading AMS Configuration')
     loadCfg()
+
     readKey('propagateAttrs')?.each { atr ->
-        logger.info("Copying attribute ${atr."$source.agileClass.APIName"}")
-        def val = getVal(source, atr."$source.agileClass.APIName")
-        logger.info("Setting attribute $atr.aas on AAS to $val")
-        setVal(target, atr."$target.agileClass.APIName", val)
+        logger.info("Copying attribute ${atr."$srcClass"} from $source.name")
+        def val = getVal(source, atr."$srcClass")
+        logger.info("Setting attribute ${atr."$srcClass"} on $target.name to $val")
+        setVal(target, atr."$tarClass", val)
     }
 }
 

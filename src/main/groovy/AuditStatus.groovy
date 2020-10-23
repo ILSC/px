@@ -41,9 +41,10 @@ void auditAAS(IChange aas, boolean isApprovalEvent, Logger logger) {
             if (!e.message.contains('You have insufficient privileges to resolve this audit issue.'))
                 errors << e.errorCode + ':' + e.message
         } else if (e.errorCode == API_SEE_ROOT_CAUSE) {
-            if (e.rootCause)
+            if (e.rootCause && !e.message.contains('You have insufficient privileges to resolve this audit issue.') &&
+                    !e.rootCause.message.contains('You have insufficient privileges to resolve this audit issue.'))
                 errors << e.errorCode + ':' + e.rootCause.message
-        } else if (!(e.errorCode in [APDM_NOTALLAPPROVERSRESPOND_WARNING, 1099])) {
+        } else if (!(e.errorCode in readKey('warningsToSkip'))) {
             errors << e.errorCode + ':' + e.message
         }
     }
@@ -84,13 +85,15 @@ Map getAASInfo(IChange aas) {
 
 boolean validateAttrs(List<IItem> awList, IChange aas, Logger logger) {
     List attrs = readKey('propagateAttrs')
+    String aasClass = aas.agileClass.APIName
     awList.each { aw ->
+        String awClass = aw.agileClass.APIName
         logger.info("Validating attributes on $aw.name and $aas.name")
         attrs?.each { atr ->
-            if (getVal(aw, atr."$aw.agileClass.APIName") != getVal(aas, atr."$aas.agileClass.APIName")) {
-                logger.info("Value for attribute $atr.aw not matching")
+            if (getVal(aw, atr."$awClass") != getVal(aas, atr."$aasClass")) {
+                logger.info("Value for attribute ${atr."$awClass"} not matching")
                 def ex = new Exception("$aas.agileClass.name $aas.name cannot be promoted to next status. " +
-                        "Value for attribute $atr.aw on artwork is not matching with AAS")
+                        "Value for attribute ${atr."$awClass"} on artwork is not matching with AAS")
                 logger.log(Level.SEVERE, ex.message, ex)
                 throw ex
             }

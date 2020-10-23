@@ -16,6 +16,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
+import static insight.sun.ams.AMSConfiguration.loadCfg
 import static insight.sun.ams.AMSConfiguration.readKey
 
 void invokeScript(IBaseScriptObj obj) {
@@ -23,6 +24,7 @@ void invokeScript(IBaseScriptObj obj) {
     try {
         IObjectEventInfo eventInfo = obj.PXEventInfo
         def aas = eventInfo.dataObject
+        loadCfg()
         processAAS(aas)
     } catch (Exception ex) {
         obj.logFatal([ex.message, ex.cause?.message].join(' '))
@@ -40,13 +42,14 @@ void processAAS(IDataObject aas) {
 }
 
 def sendMail(IChange aas, File outFile, def config) {
+    def smtpConfig = readKey('smtpConfig')
     Properties properties = System.properties
-    properties.setProperty('mail.smtp.host', '172.30.58.249')
-    properties.setProperty('mail.smtp.port', '25')
+    properties.setProperty('mail.smtp.host', smtpConfig.host)
+    properties.setProperty('mail.smtp.port', smtpConfig.port)
     Session session = Session.getDefaultInstance(properties)
 
     MimeMessage msg = new MimeMessage(session)
-    msg.setFrom(new InternetAddress('agile.admin@sunpharma.com'))
+    msg.setFrom(new InternetAddress(smtpConfig.from))
     config.emails.each { email ->
         msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email))
     }

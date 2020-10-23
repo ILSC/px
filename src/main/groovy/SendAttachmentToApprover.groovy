@@ -12,9 +12,14 @@ import groovy.xml.MarkupBuilder
 import javax.mail.*
 import javax.mail.internet.*
 
+import static insight.sun.ams.AMSConfiguration.loadCfg
+import static insight.sun.ams.AMSConfiguration.readKey
+
 void invokeScript(IBaseScriptObj obj) {
     IObjectEventInfo info = obj.PXEventInfo
     IChange aas = info.dataObject
+    loadCfg()
+
     List<String> emails = aas.getTable(ChangeConstants.TABLE_WORKFLOW).findAll { IRow r ->
         r.getValue(ChangeConstants.ATT_WORKFLOW_WORKFLOW_STATUS).toString() == 'Commercial Team Review' &&
                 r.getValue(ChangeConstants.ATT_WORKFLOW_REVIEWER).toString() in ['AMS-Commercial Team', 'AMS-Commerical Team'] &&
@@ -35,12 +40,13 @@ void invokeScript(IBaseScriptObj obj) {
 }
 
 def sendMail(IItem item, List<String> emails) {
+    def smtpConfig = readKey('smtpConfig')
     Properties properties = System.properties
-    properties.setProperty('mail.smtp.host', '172.30.58.249')
-    properties.setProperty('mail.smtp.port', '25')
+    properties.setProperty('mail.smtp.host', smtpConfig.host)
+    properties.setProperty('mail.smtp.port', smtpConfig.port)
     Session session = Session.getDefaultInstance(properties)
     MimeMessage msg = new MimeMessage(session)
-    msg.setFrom(new InternetAddress('agile.admin@sunpharma.com'))
+    msg.setFrom(new InternetAddress(smtpConfig.from))
     emails.each { email ->
         msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email))
     }
