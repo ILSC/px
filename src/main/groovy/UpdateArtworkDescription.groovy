@@ -1,4 +1,5 @@
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
+import com.agile.api.IAgileClass
 import com.agile.api.IItem
 import com.agile.px.IEventDirtyCell
 import com.agile.px.IUpdateTitleBlockEventInfo
@@ -9,8 +10,6 @@ import insight.common.logging.JLogger
 import java.util.logging.Level
 import java.util.logging.Logger
 
-import static com.agile.api.CommonConstants.*
-import static com.agile.api.ItemConstants.ATT_TITLE_BLOCK_DESCRIPTION
 import static insight.sun.ams.AMSConfiguration.*
 
 void invokeScript(IBaseScriptObj obj) {
@@ -22,15 +21,22 @@ void invokeScript(IBaseScriptObj obj) {
 
         IUpdateTitleBlockEventInfo eventInfo = obj.PXEventInfo
         IItem item = eventInfo.dataObject
-        def productName = ATT_PAGE_THREE_LIST04, strength = ATT_PAGE_THREE_TEXT01, component = ATT_PAGE_TWO_LIST12,
-            markets = ATT_PAGE_THREE_MULTILIST02, itemCode = ATT_PAGE_THREE_TEXT07
 
-        if (eventInfo.cells*.attributeId.intersect([productName, strength, component, markets, itemCode])) {
-            String desc = getDescription(eventInfo, item)
-            eventInfo.setCell(ATT_TITLE_BLOCK_DESCRIPTION, desc)
-            obj.logMonitor("Description Updated: $desc")
+        IAgileClass itmClass = item.agileClass
+        Map<String, Integer> attrMap = [productName: 'ProductNameBrandName',
+                       description: 'ArtworkDescription',
+                       markets    : 'Market',
+                       strength   : 'Strength',
+                       component  : 'ComponentType',
+                       itemCode   : 'SAPItemCodeMetisItemCode'].collectEntries { k, v ->
+            [(k): itmClass.getAttribute(v).id]
         }
 
+        if (eventInfo.cells*.attributeId.intersect(attrMap.values())) {
+            String desc = getDescription(eventInfo, item, attrMap)
+            eventInfo.setCell(attrMap.description, desc)
+            obj.logMonitor("Description Updated: $desc")
+        }
     } catch (Exception ex) {
         obj.logFatal([ex.message, ex.cause?.message].join(' '))
         logger.log(Level.SEVERE, 'Failed to update description on Artwork', ex)
@@ -38,16 +44,15 @@ void invokeScript(IBaseScriptObj obj) {
     }
 }
 
-String getDescription(IUpdateTitleBlockEventInfo eventInfo, IItem item) {
-    def itemCode = ATT_PAGE_THREE_TEXT07
+String getDescription(IUpdateTitleBlockEventInfo eventInfo, IItem item, Map<String, Integer> attrMap) {
     String desc = null
-    String itmCode = eventInfo.getCell(itemCode).value
+    String itmCode = eventInfo.getCell(attrMap.itemCode).value
 
     if (itmCode)
         desc = getDescriptionFromSAP(itmCode)
 
     if (!desc)
-        desc = getValues(eventInfo, item).findAll { it }.join(', ')
+        desc = getValues(eventInfo, item, attrMap).findAll { it }.join(', ')
 
     if (itmCode)
         desc = itmCode + ' - ' + desc
@@ -55,11 +60,10 @@ String getDescription(IUpdateTitleBlockEventInfo eventInfo, IItem item) {
     desc
 }
 
-List getValues(IUpdateTitleBlockEventInfo eventInfo, IItem item) {
-    Integer productName = ATT_PAGE_THREE_LIST04, strength = ATT_PAGE_THREE_TEXT01, component = ATT_PAGE_TWO_LIST12,
-            markets = ATT_PAGE_THREE_MULTILIST02
-    [getValue(productName, eventInfo, item), getValue(strength, eventInfo, item), getValue(component, eventInfo, item),
-     getValue(markets, eventInfo, item)?.toUpperCase()?.replaceAll(';', ' ')]
+List getValues(IUpdateTitleBlockEventInfo eventInfo, IItem item, Map<String, Integer> attrMap) {
+    [getValue(attrMap.productName, eventInfo, item), getValue(attrMap.strength, eventInfo, item),
+     getValue(attrMap.component, eventInfo, item),
+     getValue(attrMap.markets, eventInfo, item)?.toUpperCase()?.replaceAll(';', ' ')]
 }
 
 String getValue(Integer atrId, IUpdateTitleBlockEventInfo eventInfo, IItem item) {
