@@ -7,10 +7,10 @@ import com.agile.px.*
 import java.util.logging.Level
 import java.util.logging.Logger
 
-import static com.agile.api.ChangeConstants.*
 import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
 import static com.agile.api.ChangeConstants.ATT_AFFECTED_ITEMS_ITEM_NUMBER
 import static com.agile.api.ChangeConstants.ATT_AFFECTED_ITEMS_REVISION
+import static com.agile.api.ChangeConstants.ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE
 import static com.agile.api.DataTypeConstants.*
 import static com.agile.px.EventConstants.DIRTY_ROW_ACTION_ADD
 
@@ -30,14 +30,8 @@ class PropagateAttributes {
                     if (r.action == DIRTY_ROW_ACTION_ADD) {
                         IRow row = aas.getTable(TABLE_AFFECTEDITEMS).tableIterator
                                 .find { IRow row -> row.getValue(ATT_AFFECTED_ITEMS_ITEM_NUMBER) == r.referent.name }
-                        def aw = row.referent as IItem
-                        def lcPhase = row.getCell(ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE).availableValues
-                        lcPhase.selection = [aas.getValue('changeCategory').toString()] as Object[]
-                        String highestRev = getHighestRev(aw.revisions.collect { k, v -> v.toString().replaceAll(/[()?]|Introductory/, '') })
-                        row.setValues([(ATT_AFFECTED_ITEMS_REVISION)       : getNextRev(highestRev),
-                                       (ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE): lcPhase])
-                        aw.refresh()
-                        awList << aw
+                        RevHelper.updateAFRow(aas, row)
+                        awList << row.referent
                     }
                 }
             } else if (IWFChangeStatusEventInfo.isAssignableFrom(eventInfo.class)) {
@@ -135,6 +129,19 @@ class PropagateAttributes {
         } else {
             return atrVal
         }
+    }
+}
+
+class RevHelper {
+
+    static void updateAFRow(IChange aas, IRow row) {
+        def aw = row.referent as IItem
+        def lcPhase = row.getCell(ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE).availableValues
+        lcPhase.selection = [aas.getValue('changeCategory').toString()] as Object[]
+        String highestRev = getHighestRev(aw.revisions.collect { k, v -> v.toString().replaceAll(/[()?]|Introductory/, '') })
+        row.setValues([(ATT_AFFECTED_ITEMS_REVISION)       : getNextRev(highestRev),
+                       (ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE): lcPhase])
+        aw.refresh()
     }
 
     static String getNextRev(String rev) {
