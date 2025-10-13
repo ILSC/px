@@ -4,7 +4,6 @@ import com.agile.agileDSL.ScriptObj.IBaseScriptObj
 import com.agile.api.*
 import com.agile.px.IObjectEventInfo
 import groovy.json.JsonSlurper
-import insight.common.logging.JLogger
 
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -18,11 +17,11 @@ import static com.agile.px.EventConstants.EVENT_APPROVE_FOR_WORKFLOW
 
 class AuditStatus {
     Logger logger = Logger.getLogger('insight.sun.ams.AuditStatus')
-    AMSConfiguration1 cfg = null
+    AMSConfig cfg = null
 
     void invokeScript(IBaseScriptObj obj) {
         try {
-            cfg = new AMSConfiguration1()
+            cfg = new AMSConfig()
             logger.info('Loading AMS Configuration')
 
             IObjectEventInfo eventInfo = obj.PXEventInfo as IObjectEventInfo
@@ -246,11 +245,11 @@ class AuditStatus {
 //    }
 }
 
-class AMSConfiguration1 {
+class AMSConfig {
     def config
     static Logger logger = Logger.getLogger(AMSConfiguration.class.name)
 
-    AMSConfiguration1() {
+    AMSConfig() {
         loadCfg('/sw/ams/oracle/spil/a936/agileDomain/config/amsConfig')
     }
 
