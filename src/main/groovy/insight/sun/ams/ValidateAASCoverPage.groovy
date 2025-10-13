@@ -43,10 +43,11 @@ class ValidateAASCoverPage {
                     co.getValue(ATT_MARKET).toString()
             String country = info.getCell(ATT_COUNTRY)?.value?.toString() ?:
                     (co.getValue(ATT_COUNTRY)?.toString() ?: '')
-            if (country == '') return
+            if (country == '' || mkt == country) return
 
-            if (map.containsKey(mkt) && !(country ==~ map.get(mkt)))
+            if (!(country ==~ (map.get(mkt) ?: mkt)))
                 throw new Exception("Country can't be set as $country with market set as '$mkt'.")
+
             obj.logInfo('Validation Passed.')
         } else {
             obj.logInfo('Validation not applicable.')
