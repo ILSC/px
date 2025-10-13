@@ -22,7 +22,13 @@ class PropagateAttributes {
 
             if (IUpdateTableEventInfo.isAssignableFrom(eventInfo.class)) {
                 eventInfo.table.iterator().each { IEventDirtyRowUpdate r ->
-                    if (r.action == EventConstants.DIRTY_ROW_ACTION_ADD) awList << r.referent
+                    if (r.action == EventConstants.DIRTY_ROW_ACTION_ADD) {
+                        def aw = r.referent as IItem
+                        String highestRev = getHighestRev(aw.revisions.collect { k, v -> v.toString().replaceAll(/[()]/, '') })
+                        r.setCell(ChangeConstants.ATT_AFFECTED_ITEMS_REVISION, getNextRev(highestRev))
+                        aw.refresh()
+                        awList << aw
+                    }
                 }
             } else if (IWFChangeStatusEventInfo.isAssignableFrom(eventInfo.class)) {
                 aas.getTable(ChangeConstants.TABLE_AFFECTEDITEMS).referentIterator.each { IItem aw ->
@@ -119,6 +125,52 @@ class PropagateAttributes {
         } else {
             return atrVal
         }
+    }
+
+    static String getNextRev(String rev) {
+        rev = rev?.trim()
+        if (!rev) return 'A'
+
+        if (rev ==~ /^\d+$/) {
+            return (rev.toInteger() + 1).toString().padLeft(rev.length(), '0')
+        }
+
+        return numToAlpha(alphaToNum(rev) + 1)
+    }
+
+    static String getHighestRev(List<String> revs) {
+        if (!revs) return null
+
+        List<String> numericRevs = revs.findAll { it.isNumber() }
+        List<String> alphaRevs = revs.findAll { !it.isNumber() }
+
+        if (!alphaRevs.isEmpty()) {
+            return alphaRevs.max { a, b -> compareAlpha(a, b) }
+        }
+
+        return numericRevs.max { it.toInteger() }
+    }
+
+    static int compareAlpha(String a, String b) {
+        return alphaToNum(a) <=> alphaToNum(b)
+    }
+
+    static int alphaToNum(String rev) {
+        int num = 0
+        rev.toUpperCase().each { ch ->
+            num = num * 26 + ((ch.charAt(0) - 'A'.charAt(0)) + 1)
+        }
+        return num
+    }
+
+    static String numToAlpha(int num) {
+        StringBuilder result = new StringBuilder()
+        while (num > 0) {
+            num--
+            result.insert(0, (char) ('A'.charAt(0) + (num % 26)))
+            num = (int) (num / 26)
+        }
+        return result.toString()
     }
 }
 
