@@ -35,6 +35,12 @@ class PropagateAttributes {
                     copyValues(aas, aw)
                     aw.refresh()
                 } else {
+                    ICell cell = aw.getCell('TypeOfRelease')
+                    if (cell.value.toString() != 'Existing') {
+                        def list = cell.availableValues
+                        list.selection = ['Existing']
+                        cell.value = list
+                    }
                     copyValues(aw, aas)
                     aas.refresh()
                 }
