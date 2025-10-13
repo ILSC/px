@@ -30,14 +30,15 @@ class ValidateAASCoverPage {
         }
 
         if (info.getCell(ATT_MARKET) || info.getCell(ATT_COUNTRY)) {
-            Map map = ["Czech Republic-Slovakia": "Czech Republic|Slovakia",
-                       "Denmark-Finland-Sweden" : "Denmark|Finland|Sweden",
-                       "Denmark-Norway"         : "Denmark|Norway",
-                       "Denmark-Norway-Sweden"  : "Denmark|Norway|Sweden",
-                       "Finland-Sweden"         : "Finland|Sweden",
-                       "Greece-Spain"           : "Greece|Spain",
-                       "Norway-Sweden"          : "Norway|Sweden",
-                       "USA"                    : "United States"]
+            Map map = ['Czech Republic-Slovakia': 'Czech Republic|Slovakia',
+                       'Denmark-Finland-Sweden' : 'Denmark|Finland|Sweden',
+                       'Denmark-Norway'         : 'Denmark|Norway',
+                       'Denmark-Norway-Sweden'  : 'Denmark|Norway|Sweden',
+                       'Finland-Sweden'         : 'Finland|Sweden',
+                       'Greece-Spain'           : 'Greece|Spain',
+                       'Norway-Sweden'          : 'Norway|Sweden',
+                       'USA'                    : 'United States',
+                       'Europe'                 : 'Austria|Belgium|Bulgaria|Croatia|Cyprus|Czechia|Denmark|Estonia|Finland|France|Germany|Greece|Hungary|Ireland|Italy|Latvia|Lithuania|Luxembourg|Malta|Netherlands|Poland|Portugal|Romania|Slovakia|Slovenia|Spain|Sweden|Iceland|Liechtenstein|Norway']
 
             String mkt = info.getCell(ATT_MARKET)?.value?.toString() ?:
                     co.getValue(ATT_MARKET).toString()
