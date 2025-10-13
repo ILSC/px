@@ -24,7 +24,7 @@ class PropagateAttributes {
                 eventInfo.table.iterator().each { IEventDirtyRowUpdate r ->
                     if (r.action == EventConstants.DIRTY_ROW_ACTION_ADD) {
                         def aw = r.referent as IItem
-                        String highestRev = getHighestRev(aw.revisions.collect { k, v -> v.toString().replaceAll(/[()]/, '') })
+                        String highestRev = getHighestRev(aw.revisions.collect { k, v -> v.toString().replaceAll(/[()]/, '').replaceAll('Introductory', '') })
                         r.setCell(ChangeConstants.ATT_AFFECTED_ITEMS_REVISION, getNextRev(highestRev))
                         aw.refresh()
                         awList << aw
@@ -140,6 +140,8 @@ class PropagateAttributes {
 
     static String getHighestRev(List<String> revs) {
         if (!revs) return null
+        revs = revs.findAll { it?.trim() != '' }
+        if (revs.size() == 1) return revs.get(0)
 
         List<String> numericRevs = revs.findAll { it.isNumber() }
         List<String> alphaRevs = revs.findAll { !it.isNumber() }
