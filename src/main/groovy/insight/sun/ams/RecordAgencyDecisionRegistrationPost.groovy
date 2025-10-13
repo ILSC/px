@@ -6,7 +6,6 @@ import com.agile.api.IStatus
 import com.agile.px.EventConstants
 import com.agile.px.IObjectEventInfo
 import com.agile.px.ISignOffEventInfo
-import com.agile.px.IUpdateTitleBlockEventInfo
 
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -16,26 +15,16 @@ import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
 import static com.agile.api.ChangeConstants.ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE
 import static com.agile.api.ExceptionConstants.APDM_NOTALLAPPROVERSRESPOND_WARNING
 
-class RecordAgencyDecisionRegistration {
+class RecordAgencyDecisionRegistrationPost {
     private static final int ATT_AGENCY_RES = 1556, ATT_CATEGORY = 1060, ATT_REL_TYPE = 1546
-    private static final Logger logger = Logger.getLogger('insight.sun.ams.RegistrationToCommercial')
+    private static final Logger logger = Logger.getLogger('insight.sun.ams.RegistrationToCommercialPost')
 
     void invokeScript(IBaseScriptObj obj) {
-        List appStatusList = ['Approved-Release As-Is', 'Approved-Release with Changes', 'Approved-Not Required in Commercial'],
-                rejStatusList = ['Resubmit-Sample Required', 'Resubmit-Sample Not Required']
         try {
             IObjectEventInfo info = obj.PXEventInfo as ISignOffEventInfo
             IChange aas = info.dataObject as IChange
             if (aas.status.name != 'Registration Awaited') return
             String response = aas.getValue(ATT_AGENCY_RES).toString()
-
-            if (obj.eventType == EventConstants.EVENT_APPROVE_FOR_WORKFLOW &&
-                    !(response in appStatusList))
-                throw new Exception("Agency Response attribute must be set to ${appStatusList.join(' or ')}")
-
-            if (obj.eventType == EventConstants.EVENT_REJECT_FOR_WORKFLOW &&
-                    !(response in rejStatusList))
-                throw new Exception("Agency Response attribute must be set to ${appStatusList.join(' or ')}")
 
             switch (response) {
                 case 'Approved-Release As-Is':
@@ -103,4 +92,3 @@ class RecordAgencyDecisionRegistration {
         aas.saveAs(aas.agileClass, params)
     }
 }
- 
