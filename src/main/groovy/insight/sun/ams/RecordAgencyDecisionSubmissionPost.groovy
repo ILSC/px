@@ -1,19 +1,16 @@
 package insight.sun.ams
 
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
-import com.agile.api.ICell
 import com.agile.api.IChange
-import com.agile.api.IRow
-import com.agile.api.IStatus
 import com.agile.px.IObjectEventInfo
 import com.agile.px.ISignOffEventInfo
 
 import java.util.logging.Level
 import java.util.logging.Logger
 
-import static com.agile.api.ChangeConstants.*
 import static com.agile.api.ExceptionConstants.*
-import static insight.sun.ams.RecordAgencyDecisionRegistrationPost.*
+import static insight.sun.ams.RecordAgencyDecisionRegistrationPost.changeStatus
+import static insight.sun.ams.RecordAgencyDecisionRegistrationPost.updateLCPhase
 
 class RecordAgencyDecisionSubmissionPost {
     private static final int ATT_AGENCY_RES = 1556, ATT_CATEGORY = 1060, ATT_REL_TYPE = 1546, ATT_ATTACH_TYPE = 4681
