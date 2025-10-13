@@ -24,6 +24,9 @@ class ValidateAASCoverPage {
 
             if (gridType in ['Contract-Manufacturing/Loan-Licensed', 'Out-Sourced'] && mfgLoc != 'Others')
                 throw new Exception("Manufacturing location must be selected as 'Others' for type of grid '$gridType'.")
+            obj.logInfo('Validation Passed.')
+        }else{
+            obj.logInfo('Validation not applicable.')
         }
     }
 }
