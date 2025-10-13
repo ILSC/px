@@ -23,9 +23,10 @@ class PropagateAttributes {
             if (IUpdateTableEventInfo.isAssignableFrom(eventInfo.class)) {
                 eventInfo.table.iterator().each { IEventDirtyRowUpdate r ->
                     if (r.action == EventConstants.DIRTY_ROW_ACTION_ADD) {
-                        def aw = r.referent as IItem
+                        IRow row = aas.getTable(ChangeConstants.TABLE_AFFECTEDITEMS).find { it.rowId == r.rowId }
+                        def aw = row.referent as IItem
                         String highestRev = getHighestRev(aw.revisions.collect { k, v -> v.toString().replaceAll(/[()]/, '').replaceAll('Introductory', '') })
-                        r.setCell(ChangeConstants.ATT_AFFECTED_ITEMS_REVISION, getNextRev(highestRev))
+                        row.setValue(ChangeConstants.ATT_AFFECTED_ITEMS_REVISION, getNextRev(highestRev))
                         aw.refresh()
                         awList << aw
                     }
