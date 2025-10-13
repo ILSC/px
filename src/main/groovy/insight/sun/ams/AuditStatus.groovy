@@ -15,18 +15,19 @@ import static com.agile.api.DataTypeConstants.*
 import static com.agile.api.ExceptionConstants.*
 import static com.agile.api.ChangeConstants.*
 import static com.agile.px.EventConstants.EVENT_APPROVE_FOR_WORKFLOW
-import static insight.sun.ams.AMSConfiguration1.loadCfg
-import static insight.sun.ams.AMSConfiguration1.readKey
 
 class AuditStatus {
+    Logger logger = Logger.getLogger('insight.sun.ams.AuditStatus')
+    AMSConfiguration1 cfg = null
+
     void invokeScript(IBaseScriptObj obj) {
-        Logger logger = JLogger.getLogger('insight.sun.ams.AuditStatus')
         try {
+            cfg = new AMSConfiguration1()
             logger.info('Loading AMS Configuration')
-            loadCfg()
-            IObjectEventInfo eventInfo = obj.PXEventInfo
+
+            IObjectEventInfo eventInfo = obj.PXEventInfo as IObjectEventInfo
             logger.info('Getting AAS from event info')
-            IChange aas = eventInfo.dataObject
+            IChange aas = eventInfo.dataObject as IChange
             logger.info("Performing Audit on AAS $aas.name, status: $aas.status")
 
             auditAAS(aas, eventInfo.eventType == EVENT_APPROVE_FOR_WORKFLOW, logger)
@@ -47,7 +48,7 @@ class AuditStatus {
                 if (e.rootCause && !e.message.contains('You have insufficient privileges to resolve this audit issue.') &&
                         !e.rootCause.message.contains('You have insufficient privileges to resolve this audit issue.'))
                     errors << e.errorCode + ':' + e.rootCause.message
-            } else if (!(e.errorCode in readKey('warningsToSkip'))) {
+            } else if (!(e.errorCode in cfg.readKey('warningsToSkip'))) {
                 errors << e.errorCode + ':' + e.message
             }
         }
@@ -87,7 +88,7 @@ class AuditStatus {
     }
 
     boolean validateAttrs(List<IItem> awList, IChange aas, Logger logger) {
-        List attrs = readKey('propagateAttrs')
+        List attrs = cfg.readKey('propagateAttrs') as List
         String aasClass = aas.agileClass.APIName
         awList.each { aw ->
             String awClass = aw.agileClass.APIName
@@ -151,7 +152,7 @@ class AuditStatus {
         logger.info("Looking up rule for workflow $ai.workflow, status $ai.status, change category $ai.chgCat, " +
                 "manufacturing location $ai.mfgLoc, type of grid $ai.grid, type of release $ai.release, markets $ai.markets")
 
-        readKey(key)?.findAll { rule ->
+        cfg.readKey(key)?.findAll { rule ->
             rule.wf == ai.workflow &&
                     rule.step == ai.status &&
                     rule.chgCat == ai.chgCat &&
@@ -246,45 +247,39 @@ class AuditStatus {
 }
 
 class AMSConfiguration1 {
-    static def config
-    static long timestamp = 0
+    def config
     static Logger logger = Logger.getLogger(AMSConfiguration.class.name)
 
-    static String path
-
-    static {
-        path = System.getenv('INSIGHT_APPLICATION_CONFIG') ?: System.getProperty('insight.application.config') ?:
-                new File('config').exists() ? 'config' : '.'
-        loadCfg()
+    AMSConfiguration1() {
+        loadCfg('/sw/ams/oracle/spil/a936/agileDomain/config/amsConfig')
     }
 
-    static readConfiguration(File cfgFile) {
+    void readConfiguration(File cfgFile) {
         try {
-            logger.info("Reading config. Last Modification: ${new Date(cfgFile.lastModified())}")
+            println "Reading config from $cfgFile.absolutePath"
             config = new JsonSlurper().parse(new FileInputStream(cfgFile))
-            timestamp = cfgFile.lastModified()
+            println "Sucessfully parsed config file $cfgFile.absolutePath"
         } catch (Exception ex) {
             throw new Exception('Failed to read AMS configuration.', ex)
         }
     }
 
-    static loadCfg() {
-        File cfgFile = new File(path, 'amsConfig.json')
+    private void loadCfg(String path) {
+        println "Loading config from file $path"
+        File cfgFile = new File(path)
         if (cfgFile.exists() && cfgFile.canRead()) {
-            if (cfgFile.lastModified() != timestamp) {
-                readConfiguration(cfgFile)
-            }
-            config
+            println "Found config file $path"
+            readConfiguration(cfgFile)
         } else {
             throw new Exception("Failed to read AMS configuration. Configuration file could not be located at $cfgFile.absolutePath.")
         }
     }
 
-    static readKey(String key, def defaultVal) {
+    def readKey(String key, def defaultVal) {
         readKey(key, true) ?: defaultVal
     }
 
-    static readKey(String key, boolean ignoreError = false) {
+    def readKey(String key, boolean ignoreError = false) {
         def base = config
         try {
             key.split('\\.').each {
