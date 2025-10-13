@@ -8,18 +8,18 @@ import com.agile.px.ISignOffEventInfo
 
 import java.util.logging.Logger
 
-class RecordAgencyDecisionRegistrationPre {
+class RecordAgencyDecisionSubmissionPre {
     private static final Logger logger = Logger.getLogger('insight.sun.ams.RegistrationToCommercialPre')
     private static final int ATT_AGENCY_RES = 1556
 
     void invokeScript(IBaseScriptObj obj) {
         IObjectEventInfo info = obj.PXEventInfo as ISignOffEventInfo
         IChange aas = info.dataObject as IChange
-        if (aas.status.name != 'Registration Awaited') return
+        if (aas.status.name != 'Waiting Agency Approval') return
 
         String response = aas.getValue(ATT_AGENCY_RES).toString()
         List appStatusList = ['Approved-Release As-Is', 'Approved-Release with Changes', 'Approved-Not Required in Commercial'],
-             rejStatusList = ['Resubmit-Sample Required', 'Resubmit-Sample Not Required']
+             rejStatusList = ['Rejected-Modify as Recommended']
 
         if (obj.eventType == EventConstants.EVENT_APPROVE_FOR_WORKFLOW &&
                 !(response in appStatusList))

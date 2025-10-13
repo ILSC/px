@@ -1,9 +1,10 @@
+package insight.sun.ams
+
 import com.agile.agileDSL.ScriptObj.IBaseScriptObj
 import com.agile.api.ICell
 import com.agile.api.IChange
 import com.agile.api.IRow
 import com.agile.api.IStatus
-import com.agile.px.EventConstants
 import com.agile.px.IObjectEventInfo
 import com.agile.px.ISignOffEventInfo
 
@@ -13,11 +14,16 @@ import java.util.logging.Logger
 import static com.agile.api.ChangeConstants.ATT_COVER_PAGE_NUMBER
 import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
 import static com.agile.api.ChangeConstants.ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE
-import static com.agile.api.ExceptionConstants.APDM_NOTALLAPPROVERSRESPOND_WARNING
+import static com.agile.api.ExceptionConstants.*
 
 class RecordAgencyDecisionRegistrationPost {
-    private static final int ATT_AGENCY_RES = 1556, ATT_CATEGORY = 1060, ATT_REL_TYPE = 1546
+    private static final int ATT_AGENCY_RES = 1556, ATT_CATEGORY = 1060, ATT_REL_TYPE = 1546, ATT_ATTACH_TYPE = 4681
     private static final Logger logger = Logger.getLogger('insight.sun.ams.RegistrationToCommercialPost')
+    private static final List warnings = [APDM_ITEMHASPENDINGCHANGES,
+                                          APDM_ITEMHAS_PENDINGCHANGES_WARNING,
+                                          APDM_PENDINGCHANGE_ITEM_WARNING,
+                                          APDM_HASPENDINGCHANGES_WARNING,
+                                          APDM_NOTALLAPPROVERSRESPOND_WARNING]
 
     void invokeScript(IBaseScriptObj obj) {
         try {
@@ -69,7 +75,7 @@ class RecordAgencyDecisionRegistrationPost {
 
     static void changeStatus(IChange aas, String toStatus) {
         if (toStatus) {
-            aas.session.disableWarning(APDM_NOTALLAPPROVERSRESPOND_WARNING)
+            warnings.each { w -> aas.session.disableWarning(w) }
             IStatus status = aas.nextStatuses.find { it.name == toStatus }
             aas.changeStatus(status, false, '', false, false, null, null,
                     null, null, false)
@@ -89,6 +95,14 @@ class RecordAgencyDecisionRegistrationPost {
             params << [(ATT_REL_TYPE): relTypeList]
         }
 
-        aas.saveAs(aas.agileClass, params)
+        def newAAS = aas.saveAs(aas.agileClass, params) as IChange
+        aas.relationship.createRow(newAAS)
+        newAAS.workflow = newAAS.workflows.first()
+        updateLCPhase(newAAS, category)
+        if (category in ['Commercial', 'Registration']) aas.attachments.each { r ->
+            IRow newRow = newAAS.attachments.createRow(r)
+            newRow.setValue(ATT_ATTACH_TYPE, r.getValue(ATT_ATTACH_TYPE))
+        }
+        changeStatus(newAAS, newAAS.defaultNextStatus.name)
     }
 }
