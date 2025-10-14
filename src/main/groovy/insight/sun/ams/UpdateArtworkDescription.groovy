@@ -26,14 +26,14 @@ class UpdateArtworkDescription {
 
             IAgileClass itmClass = item.agileClass
             Map<String, Integer> attrMap = [productName: 'ProductNameBrandName',
-                                            genericName    : 'GenericName',
+                                            genericName: 'GenericName',
                                             strength   : 'Strength',
                                             itemCode   : 'SAPItemCodeMetisItemCode'].collectEntries { k, v ->
                 [(k): itmClass.getAttribute(v).id]
             }
 
             if (eventInfo.cells*.attributeId.intersect(attrMap.values())) {
-                String desc = getDescription(eventInfo, item, attrMap,logger)
+                String desc = getDescription(eventInfo, item, attrMap, logger)
                 item.setValue(ATT_TITLE_BLOCK_DESCRIPTION, desc)
                 obj.logMonitor("Description Updated: $desc")
             }
@@ -44,11 +44,11 @@ class UpdateArtworkDescription {
         }
     }
 
-    String getDescription(IUpdateTitleBlockEventInfo eventInfo, IItem item, Map<String, Integer> attrMap,Logger logger) {
+    String getDescription(IUpdateTitleBlockEventInfo eventInfo, IItem item, Map<String, Integer> attrMap, Logger logger) {
         String desc = null
         String itmCode = getValue(attrMap.itemCode, eventInfo, item)
 
-        String msg="Description updating for itemCode: $itmCode, revision: ${item.revision}".toString()
+        String msg = "Description updating for itemCode: $itmCode, revision: ${item.revision}".toString()
         logger.log(Level.SEVERE, msg)
         item.logAction(msg)
         if (itmCode)
@@ -70,8 +70,7 @@ class UpdateArtworkDescription {
 
     String getValue(Integer atrId, IUpdateTitleBlockEventInfo eventInfo, IItem item) {
         IEventDirtyCell cell = eventInfo.getCell(atrId)
-
-        cell ? cell.value?.toString() : item.getValue(atrId)?.toString()
+        cell?.value?.toString() ?: item.getValue(atrId)?.toString()
     }
 
     String getDescriptionFromSAP(String itemCode) {
