@@ -16,8 +16,8 @@ import static com.agile.api.ChangeConstants.*
 import static com.agile.px.EventConstants.EVENT_APPROVE_FOR_WORKFLOW
 
 class AuditStatus {
-    Logger logger = Logger.getLogger('insight.sun.ams.AuditStatus')
-    AMSConfig cfg = null
+   private static final Logger logger = Logger.getLogger(AuditStatus.class.name)
+   private AMSConfig cfg = null
 
     void invokeScript(IBaseScriptObj obj) {
         try {

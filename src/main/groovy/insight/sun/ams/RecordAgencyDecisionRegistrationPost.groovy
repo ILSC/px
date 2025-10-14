@@ -18,9 +18,8 @@ import static com.agile.api.ExceptionConstants.*
 
 class RecordAgencyDecisionRegistrationPost {
     private static final int ATT_AGENCY_RES = 1556, ATT_CATEGORY = 1060, ATT_REL_TYPE = 1546, ATT_ATTACH_TYPE = 4681
-    private static final Logger logger = Logger.getLogger('insight.sun.ams.RegistrationToCommercialPost')
-    private static final List warnings = [APDM_ITEMHASPENDINGCHANGES,
-                                          APDM_ITEMHAS_PENDINGCHANGES_WARNING,
+    private static final Logger logger = Logger.getLogger(RecordAgencyDecisionRegistrationPost.class.name)
+    private static final List warnings = [APDM_ITEMHAS_PENDINGCHANGES_WARNING,
                                           APDM_PENDINGCHANGE_ITEM_WARNING,
                                           APDM_HASPENDINGCHANGES_WARNING,
                                           APDM_NOTALLAPPROVERSRESPOND_WARNING]
