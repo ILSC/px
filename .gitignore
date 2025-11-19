@@ -28,3 +28,5 @@ out/
 libs/AgileAPI.jar
 libs/pxapi.jar
 logs/
+
+.vscode/

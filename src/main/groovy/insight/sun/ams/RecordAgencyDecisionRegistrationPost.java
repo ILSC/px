@@ -1,107 +1,171 @@
-package insight.sun.ams
+package insight.sun.ams;
 
-import com.agile.agileDSL.ScriptObj.IBaseScriptObj
-import com.agile.api.ICell
-import com.agile.api.IChange
-import com.agile.api.IRow
-import com.agile.api.IStatus
-import com.agile.px.IObjectEventInfo
-import com.agile.px.ISignOffEventInfo
+import com.agile.api.*;
+import com.agile.px.*;
 
-import java.util.logging.Level
-import java.util.logging.Logger
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static com.agile.api.ChangeConstants.ATT_COVER_PAGE_NUMBER
-import static com.agile.api.ChangeConstants.TABLE_AFFECTEDITEMS
-import static com.agile.api.ChangeConstants.ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE
-import static com.agile.api.ExceptionConstants.*
+import static com.agile.api.ChangeConstants.*;
+import static com.agile.api.ExceptionConstants.*;
 
-class RecordAgencyDecisionRegistrationPost {
-    private static final int ATT_AGENCY_RES = 1556, ATT_CATEGORY = 1060, ATT_REL_TYPE = 1546, ATT_ATTACH_TYPE = 4681
-    private static final Logger logger = Logger.getLogger(RecordAgencyDecisionRegistrationPost.class.name)
-    private static final List warnings = [APDM_ITEMHAS_PENDINGCHANGES_WARNING,
-                                          APDM_PENDINGCHANGE_ITEM_WARNING,
-                                          APDM_HASPENDINGCHANGES_WARNING,
-                                          APDM_NOTALLAPPROVERSRESPOND_WARNING]
+public class RecordAgencyDecisionRegistrationPost  implements IEventAction , ICustomAction{
+    private static final int ATT_AGENCY_RES = 1556;
+    private static final int ATT_CATEGORY = 1060;
+    private static final int ATT_REL_TYPE = 1546;
+    private static final int ATT_ATTACH_TYPE = 4681;
+    
+    private static final Logger logger = Logger.getLogger(RecordAgencyDecisionRegistrationPost.class.getName());
+    
+    private static final List<Integer> warnings = Arrays.asList(
+            APDM_ITEMHAS_PENDINGCHANGES_WARNING,
+            APDM_DELETEALL_LOSEATTACHMENTS_WARNING,
+            APDM_PENDINGCHANGE_ITEM_WARNING,
+            APDM_HASPENDINGCHANGES_WARNING,
+            APDM_NOTALLAPPROVERSRESPOND_WARNING
+    );
 
-    void invokeScript(IBaseScriptObj obj) {
+    @Override
+    public ActionResult doAction(IAgileSession iAgileSession, INode iNode, IDataObject iDataObject) {
+        return null;
+    }
+
+    @Override
+    public EventActionResult doAction(IAgileSession iAgileSession, INode iNode, IEventInfo iEventInfo) {
         try {
-            IObjectEventInfo info = obj.PXEventInfo as ISignOffEventInfo
-            IChange aas = info.dataObject as IChange
-            if (aas.status.name != 'Registration Awaited') return
-            String response = aas.getValue(ATT_AGENCY_RES).toString()
+            return doAction((ISignOffEventInfo) iEventInfo);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Failed to perform action." + e.getMessage(), e);
+            return new EventActionResult(iEventInfo, new ActionResult(ActionResult.EXCEPTION, e));
+        }
+    }
 
-            switch (response) {
-                case 'Approved-Release As-Is':
-                    changeStatus(aas, 'Plant Packaging Review')
-                    updateLCPhase(aas, 'Commercial')
-                    break
-                case 'Approved-Release with Changes':
-                    changeStatus(aas, 'Closed')
-                    updateLCPhase(aas, 'Registration')
-                    createNewAAS(aas, 'Commercial', 'Existing')
-                    break
-                case 'Approved-Not Required in Commercial':
-                    changeStatus(aas, 'Closed')
-                    updateLCPhase(aas, 'Registration')
-                    break
-                case 'Resubmit-Sample Required':
-                    changeStatus(aas, 'Rejected By Agency')
-                    createNewAAS(aas, 'Registration')
-                    break
-                case 'Resubmit-Sample Not Required':
-                    changeStatus(aas, 'Rejected By Agency')
-                    createNewAAS(aas, 'Submission')
-                    break
+    public EventActionResult doAction(ISignOffEventInfo info) throws Exception {
+        IChange aas = (IChange) info.getDataObject();
+
+        if (!info.getStatus().getName().equals("Registration Awaited")) {
+            return new EventActionResult(info, new ActionResult(ActionResult.STRING, "Status is "+ aas.getStatus().getName() +", it should be 'Registration Awaited'"));
+        }
+
+        String response = aas.getValue(ATT_AGENCY_RES).toString();
+        String message = "";
+
+        switch (response) {
+            case "Approved-Release As-Is":
+                changeStatus(aas, "Plant Packaging Review");
+                updateLCPhase(aas, "Commercial");
+                break;
+
+            case "Approved-Release with Changes":
+                changeStatus(aas, "Closed");
+                updateLCPhase(aas, "Registration");
+                createNewAAS(aas, "Commercial", "Existing");
+                break;
+
+            case "Approved-Not Required in Commercial":
+                changeStatus(aas, "Closed");
+                updateLCPhase(aas, "Registration");
+                break;
+
+            case "Resubmit-Sample Required":
+                changeStatus(aas, "Rejected By Agency");
+                IChange newAASReg = createNewAAS(aas, "Registration", null);
+                message = "New Registration AAS " + newAASReg.getName() + " created and added to Relationship tab.";
+                break;
+
+            case "Resubmit-Sample Not Required":
+                changeStatus(aas, "Rejected By Agency");
+                IChange newAASSub = createNewAAS(aas, "Submission", null);
+                message = "New Submission AAS " + newAASSub.getName() + " created and added to Relationship tab.";
+                break;
+        }
+
+        return new EventActionResult(info, new ActionResult(ActionResult.STRING, message));
+    }
+
+    private static void updateLCPhase(IChange aas, String lcPhase) throws Exception {
+        ITable table = aas.getTable(TABLE_AFFECTEDITEMS);
+        ITwoWayIterator iterator = table.getTableIterator();
+        
+        while (iterator.hasNext()) {
+            IRow row = (IRow) iterator.next();
+            ICell lcCell = row.getCell(ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE);
+            
+            if (!lcCell.getValue().toString().equals(lcPhase)) {
+                IAgileList list = (IAgileList) lcCell.getAvailableValues();
+                list.setSelection(new Object[]{lcPhase});
+                lcCell.setValue(list);
             }
-        } catch (Exception ex) {
-            obj.logFatal([ex.message, ex.cause?.message].join(' '))
-            logger.log(Level.SEVERE, 'Failed to change status of AAS', ex)
-            throw (ex)
         }
     }
 
-    static void updateLCPhase(IChange aas, String lcPhase) {
-        aas.getTable(TABLE_AFFECTEDITEMS).each { IRow r ->
-            ICell lcCell = r.getCell(ATT_AFFECTED_ITEMS_LIFECYCLE_PHASE)
-            if (lcCell.value.toString() != lcPhase) {
-                def list = lcCell.availableValues
-                list.selection = [lcPhase] as Object[]
-                lcCell.value = list
+    private static void changeStatus(IChange aas, String toStatus) throws Exception {
+        if (toStatus != null && !toStatus.isEmpty()) {
+            for (Integer warning : warnings) {
+                aas.getSession().disableWarning(warning);
+            }
+            
+            IStatus status = null;
+            IStatus[] nextStatuses = aas.getNextStatuses();
+            for (IStatus s : nextStatuses) {
+                if (s.getName().equals(toStatus)) {
+                    status = s;
+                    break;
+                }
+            }
+            
+            if (status != null) {
+                aas.changeStatus(status, false, "", false, false, null, null, null, null, false);
             }
         }
     }
 
-    static void changeStatus(IChange aas, String toStatus) {
-        if (toStatus) {
-            warnings.each { w -> aas.session.disableWarning(w) }
-            IStatus status = aas.nextStatuses.find { it.name == toStatus }
-            aas.changeStatus(status, false, '', false, false, null, null,
-                    null, null, false)
-        }
-    }
+    private static IChange createNewAAS(IChange aas, String category, String relType) throws Exception {
+        Map<Integer, Object> params = new HashMap<>();
+        
+        IAutoNumber autoNumber = aas.getAgileClass().getAutoNumberSources()[0];
+        params.put(ATT_COVER_PAGE_NUMBER, autoNumber.getNextNumber());
 
-    static void createNewAAS(IChange aas, String category, String relType = null) {
-        Map params = [(ATT_COVER_PAGE_NUMBER): aas.agileClass.autoNumberSources.first().nextNumber]
+        IAgileList catList = (IAgileList) aas.getCell(ATT_CATEGORY).getAvailableValues();
+        catList.setSelection(new Object[]{category});
+        params.put(ATT_CATEGORY, catList);
 
-        def catList = aas.getCell(ATT_CATEGORY).availableValues
-        catList.selection = [category] as Object[]
-        params << [(ATT_CATEGORY): catList]
-
-        if (relType) {
-            def relTypeList = aas.getCell(ATT_REL_TYPE).availableValues
-            relTypeList.selection = [relType] as Object[]
-            params << [(ATT_REL_TYPE): relTypeList]
+        if (relType != null) {
+            IAgileList relTypeList = (IAgileList) aas.getCell(ATT_REL_TYPE).getAvailableValues();
+            relTypeList.setSelection(new Object[]{relType});
+            params.put(ATT_REL_TYPE, relTypeList);
         }
 
-        def newAAS = aas.saveAs(aas.agileClass, params) as IChange
-        aas.relationship.createRow(newAAS)
-        newAAS.workflow = newAAS.workflows.first()
-        updateLCPhase(newAAS, category)
-        if (category in ['Commercial', 'Registration']) aas.attachments.each { r ->
-            IRow newRow = newAAS.attachments.createRow(r)
-            newRow.setValue(ATT_ATTACH_TYPE, r.getValue(ATT_ATTACH_TYPE))
+        IChange newAAS = (IChange) aas.saveAs(aas.getAgileClass(), params);
+        aas.getRelationship().createRow(newAAS);
+        
+        IWorkflow[] workflows = newAAS.getWorkflows();
+        if (workflows != null && workflows.length > 0) {
+            newAAS.setWorkflow(workflows[0]);
         }
-        changeStatus(newAAS, newAAS.defaultNextStatus.name)
+        
+        updateLCPhase(newAAS, category);
+        
+        if (category.equals("Commercial") || category.equals("Registration")) {
+            ITable attachments = aas.getAttachments();
+            ITwoWayIterator iterator = attachments.getTableIterator();
+            
+            while (iterator.hasNext()) {
+                IRow row = (IRow) iterator.next();
+                IRow newRow = newAAS.getAttachments().createRow(row);
+                newRow.setValue(ATT_ATTACH_TYPE, row.getValue(ATT_ATTACH_TYPE));
+            }
+        }
+        
+        IStatus defaultNextStatus = newAAS.getDefaultNextStatus();
+        if (defaultNextStatus != null) {
+            changeStatus(newAAS, defaultNextStatus.getName());
+        }
+        
+        return newAAS;
     }
 }

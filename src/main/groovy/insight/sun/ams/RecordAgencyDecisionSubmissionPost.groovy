@@ -8,7 +8,6 @@ import com.agile.px.ISignOffEventInfo
 import java.util.logging.Level
 import java.util.logging.Logger
 
-import static com.agile.api.ExceptionConstants.*
 import static insight.sun.ams.RecordAgencyDecisionRegistrationPost.changeStatus
 import static insight.sun.ams.RecordAgencyDecisionRegistrationPost.updateLCPhase
 

@@ -184,10 +184,12 @@ class AuditStatus {
     }
 
     def checkAttachments(IDataObject dataObject, List<String> attTypes, Logger logger) {
-        def types = dataObject.getTable(TABLE_ATTACHMENTS).collect { IRow r -> getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE)
+        List<String> types = dataObject.getTable(TABLE_ATTACHMENTS).collect { IRow r ->
+            getVal(r, ATT_ATTACHMENTS_ATTACHMENT_TYPE).toString()
         }
         logger.info("Found files of type $types attached to $dataObject.name")
-        attTypes - types
+        attTypes.removeAll { reqType -> types.find { it.matches(reqType) } }
+        attTypes
     }
 
     List<IItem> getArtWorks(IChange aas) {
@@ -231,7 +233,7 @@ class AMSConfig {
     static Logger logger = Logger.getLogger(AMSConfiguration.class.name)
 
     AMSConfig() {
-        loadCfg('/sw/ams/oracle/spil/a936/agileDomain/config/amsConfig')
+        loadCfg('/sw/ams/oracle/spil/agile936/agileDomain/config/amsConfig.json')
     }
 
     void readConfiguration(File cfgFile) {
